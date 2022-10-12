@@ -3,7 +3,7 @@ using Sungero.Core;
 
 namespace DirRX.HelpDesk.Constants
 {
-  public static class TypeRequest
+  public static class Request
   {
 
   }

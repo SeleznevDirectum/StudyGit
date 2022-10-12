@@ -21,7 +21,8 @@
     "Header": {
       "NameGuid": "70acaaa4-9dd3-4088-b726-6a82f68d6427",
       "BackgroundPosition": "Stretch"
-    }
+    },
+    "Tabs": []
   },
   "Dependencies": [
     {
@@ -33,7 +34,8 @@
   ],
   "ExplorerTreeOrder": [
     {
-      "ItemId": "777801d5-52c2-4f93-8d21-6bdfd81dd813"
+      "ItemId": "4bbd0641-de91-43eb-bf2d-4d3e7b28de25",
+      "PreviousItemId": "777801d5-52c2-4f93-8d21-6bdfd81dd813"
     }
   ],
   "IconResourcesKeys": [],
@@ -54,7 +56,7 @@
   "Versions": [
     {
       "Type": "ModuleMetadata",
-      "Number": 6
+      "Number": 8
     },
     {
       "Type": "DomainApi",
