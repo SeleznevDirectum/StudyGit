@@ -67,4 +67,7 @@
   <data name="CollectionDisplayName" xml:space="preserve">
     <value>AddendumRequests</value>
   </data>
+  <data name="Property_Employee" xml:space="preserve">
+    <value>Employee</value>
+  </data>
 </root>

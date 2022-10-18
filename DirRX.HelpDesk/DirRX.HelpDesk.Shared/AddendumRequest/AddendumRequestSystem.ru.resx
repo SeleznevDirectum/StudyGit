@@ -67,4 +67,7 @@
   <data name="AccusativeDisplayName" xml:space="preserve">
     <value>Приложение к обращению</value>
   </data>
+  <data name="Property_Employee" xml:space="preserve">
+    <value>Сотрудник</value>
+  </data>
 </root>
