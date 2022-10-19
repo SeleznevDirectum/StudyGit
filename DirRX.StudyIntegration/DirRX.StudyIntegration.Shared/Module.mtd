@@ -1,0 +1,60 @@
+{
+  "$type": "Sungero.Metadata.ModuleMetadata, Sungero.Metadata",
+  "NameGuid": "9fa97003-c0ff-4aad-87c7-5af0a73b67ee",
+  "Name": "StudyIntegration",
+  "AsyncHandlers": [],
+  "ClientAssemblyName": "DirRX.StudyIntegration.Client",
+  "ClientBaseAssemblyName": "DirRX.StudyIntegration.ClientBase",
+  "ClientBaseNamespace": "DirRX.StudyIntegration.ClientBase",
+  "ClientNamespace": "DirRX.StudyIntegration.Client",
+  "Code": "StudyIn",
+  "CompanyCode": "DirRX",
+  "Cover": {
+    "NameGuid": "d9f744c1-e145-4be9-bda2-c4b785116117",
+    "Actions": [],
+    "Background": null,
+    "Footer": {
+      "NameGuid": "11e83a68-a0b2-47ed-98e3-57f7ccb34c0a",
+      "BackgroundPosition": "Stretch"
+    },
+    "Groups": [],
+    "Header": {
+      "NameGuid": "8c5875e3-6c95-4365-96d0-d928552c445e",
+      "BackgroundPosition": "Stretch"
+    },
+    "Tabs": []
+  },
+  "Dependencies": [
+    {
+      "Id": "59e3b659-312d-4ec3-8c84-74246aa3a929",
+      "IsSolutionModule": true,
+      "MaxVersion": "",
+      "MinVersion": ""
+    }
+  ],
+  "IconResourcesKeys": [],
+  "Importance": "Medium",
+  "InterfaceAssemblyName": "Sungero.Domain.Interfaces",
+  "InterfaceNamespace": "DirRX.StudyIntegration",
+  "PublicStructures": [],
+  "ResourceInterfaceAssemblyName": "Sungero.Domain.Interfaces",
+  "ResourceInterfaceNamespace": "DirRX.StudyIntegration",
+  "ResourcesKeys": [],
+  "ServerAssemblyName": "DirRX.StudyIntegration.Server",
+  "ServerNamespace": "DirRX.StudyIntegration.Server",
+  "SharedAssemblyName": "DirRX.StudyIntegration.Shared",
+  "SharedNamespace": "DirRX.StudyIntegration.Shared",
+  "SpecialFolders": [],
+  "Version": "0.0.1.0",
+  "Widgets": [],
+  "Versions": [
+    {
+      "Type": "ModuleMetadata",
+      "Number": 8
+    },
+    {
+      "Type": "DomainApi",
+      "Number": 3
+    }
+  ]
+}

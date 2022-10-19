@@ -1,0 +1,58 @@
+{
+  "$type": "Sungero.Metadata.SolutionMetadata, Sungero.Metadata",
+  "NameGuid": "59e3b659-312d-4ec3-8c84-74246aa3a929",
+  "Name": "IntegrationRubi",
+  "AsyncHandlers": [],
+  "ClientAssemblyName": "DirRX.IntegrationRubi.Client",
+  "ClientBaseAssemblyName": "DirRX.IntegrationRubi.ClientBase",
+  "ClientBaseNamespace": "DirRX.IntegrationRubi.ClientBase",
+  "ClientNamespace": "DirRX.IntegrationRubi.Client",
+  "Code": "Integra",
+  "CompanyCode": "DirRX",
+  "Cover": {
+    "NameGuid": "fc813ac2-71c0-410f-971a-7cd2fd7457f5",
+    "Actions": [],
+    "Background": null,
+    "Footer": {
+      "NameGuid": "9d768b19-527c-47a0-b40d-aab03bf5c60b",
+      "BackgroundPosition": "Stretch"
+    },
+    "Groups": [],
+    "Header": {
+      "NameGuid": "35169dee-c7d0-4cc9-8a42-c6ca74367086",
+      "BackgroundPosition": "Stretch"
+    },
+    "Tabs": []
+  },
+  "DesktopViews": [],
+  "IconResourcesKeys": [],
+  "Importance": "Medium",
+  "InterfaceAssemblyName": "Sungero.Domain.Interfaces",
+  "InterfaceNamespace": "DirRX.IntegrationRubi",
+  "OrderedSpecialFolders": [],
+  "PublicStructures": [],
+  "ResourceInterfaceAssemblyName": "Sungero.Domain.Interfaces",
+  "ResourceInterfaceNamespace": "DirRX.IntegrationRubi",
+  "ResourcesKeys": [],
+  "ServerAssemblyName": "DirRX.IntegrationRubi.Server",
+  "ServerNamespace": "DirRX.IntegrationRubi.Server",
+  "SharedAssemblyName": "DirRX.IntegrationRubi.Shared",
+  "SharedNamespace": "DirRX.IntegrationRubi.Shared",
+  "SpecialFolders": [],
+  "Version": "0.0.1.0",
+  "Widgets": [],
+  "Versions": [
+    {
+      "Type": "SolutionMetadata",
+      "Number": 8
+    },
+    {
+      "Type": "ModuleMetadata",
+      "Number": 8
+    },
+    {
+      "Type": "DomainApi",
+      "Number": 3
+    }
+  ]
+}
