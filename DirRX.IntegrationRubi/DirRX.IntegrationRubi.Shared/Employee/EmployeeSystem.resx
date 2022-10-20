@@ -59,16 +59,16 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Property_WWIDDirRX" xml:space="preserve">
-    <value>WWI</value>
+    <value>WWID</value>
   </data>
   <data name="Property_EndlDateDirRX" xml:space="preserve">
-    <value>DismissalDate</value>
+    <value>Dismissal Date</value>
   </data>
   <data name="Property_StartDateDirRX" xml:space="preserve">
-    <value>RecruitmentDate</value>
+    <value>Recruitment Date</value>
   </data>
   <data name="Property_MangerDirRX" xml:space="preserve">
-    <value>Manger</value>
+    <value>Manager</value>
   </data>
   <data name="ControlGroup_a01165135e0c4eff878369233eb2e2ab" xml:space="preserve">
     <value />

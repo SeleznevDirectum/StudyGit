@@ -344,8 +344,8 @@
           "$type": "Sungero.Metadata.ControlMetadata, Sungero.Metadata",
           "NameGuid": "fa5a42b8-9bb9-4b5d-8352-280a109a96c0",
           "Name": "StatusDirRX",
-          "ColumnNumber": 0,
-          "ColumnSpan": 2,
+          "ColumnNumber": 1,
+          "ColumnSpan": 1,
           "DataBinderTypeName": "Sungero.Presentation.CommonDataBinders.DropDownEditorToEnumerationBinder",
           "ParentGuid": "0b3bb168-6122-49a5-9633-c5b81742ae05",
           "PropertyGuid": "1dcedc29-5140-4770-ac92-eabc212326a1",
@@ -373,7 +373,7 @@
           "Name": "StartDateDirRXDirRX",
           "ColumnNumber": 0,
           "ColumnSpan": 1,
-          "DataBinderTypeName": "Sungero.Presentation.CommonDataBinders.StringEditorToStringBinder",
+          "DataBinderTypeName": "Sungero.Presentation.CommonDataBinders.DateTimeEditorToDateTimeBinder",
           "ParentGuid": "0b3bb168-6122-49a5-9633-c5b81742ae05",
           "PropertyGuid": "b058bbde-20a9-477c-8cbc-5e7349716b02",
           "RowNumber": 6,
@@ -405,6 +405,19 @@
           "RowNumber": 5,
           "RowSpan": 1,
           "Settings": []
+        },
+        {
+          "$type": "Sungero.Metadata.ControlMetadata, Sungero.Metadata",
+          "NameGuid": "174a8d98-e7e5-4756-82ff-aae7fdb49553",
+          "Name": "WWIDDirRXDirRX",
+          "ColumnNumber": 0,
+          "ColumnSpan": 1,
+          "DataBinderTypeName": "Sungero.Presentation.CommonDataBinders.StringEditorToStringBinder",
+          "ParentGuid": "0b3bb168-6122-49a5-9633-c5b81742ae05",
+          "PropertyGuid": "b89c34a6-4a2a-4165-ae2e-9ed231ba4389",
+          "RowNumber": 7,
+          "RowSpan": 1,
+          "Settings": []
         }
       ],
       "IsAncestorMetadata": true,
@@ -420,12 +433,23 @@
   "OperationsClass": "",
   "Properties": [
     {
-      "$type": "Sungero.Metadata.IntegerPropertyMetadata, Sungero.Metadata",
+      "$type": "Sungero.Metadata.NavigationPropertyMetadata, Sungero.Metadata",
+      "NameGuid": "b61ee498-fdc7-4009-857b-4d77020dabf8",
+      "Name": "JobTitle",
+      "IsAncestorMetadata": true,
+      "Overridden": [
+        "IsAdditionalInfo"
+      ],
+      "Versions": []
+    },
+    {
+      "$type": "Sungero.Metadata.StringPropertyMetadata, Sungero.Metadata",
       "NameGuid": "b89c34a6-4a2a-4165-ae2e-9ed231ba4389",
       "Name": "WWIDDirRX",
       "Code": "WWIDDirRX",
       "IsEnabled": false,
-      "ListDataBinderTypeName": "Sungero.Presentation.CommonDataBinders.NumericEditorToIntAndDoubleBinder",
+      "Length": 24,
+      "ListDataBinderTypeName": "Sungero.Presentation.CommonDataBinders.StringEditorToStringBinder",
       "PreviousPropertyGuid": "c28bcc9d-5ab2-41cd-8117-2552ca0ab576"
     },
     {
@@ -438,12 +462,12 @@
       "PreviousPropertyGuid": "b89c34a6-4a2a-4165-ae2e-9ed231ba4389"
     },
     {
-      "$type": "Sungero.Metadata.StringPropertyMetadata, Sungero.Metadata",
+      "$type": "Sungero.Metadata.DateTimePropertyMetadata, Sungero.Metadata",
       "NameGuid": "b058bbde-20a9-477c-8cbc-5e7349716b02",
       "Name": "StartDateDirRX",
       "Code": "StartDateDirRX",
       "IsEnabled": false,
-      "ListDataBinderTypeName": "Sungero.Presentation.CommonDataBinders.StringEditorToStringBinder",
+      "ListDataBinderTypeName": "Sungero.Presentation.CommonDataBinders.DateTimeEditorToDateTimeBinder",
       "PreviousPropertyGuid": "ca3a7488-1d8b-48d1-85d6-627a42830c9c"
     },
     {
