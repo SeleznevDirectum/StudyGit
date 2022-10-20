@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Property_WWIDDirRX" xml:space="preserve">
+    <value>WWID</value>
+  </data>
+  <data name="Property_EndlDateDirRX" xml:space="preserve">
+    <value>Dismissal Date</value>
+  </data>
+  <data name="Property_StartDateDirRX" xml:space="preserve">
+    <value>Recruitment Date</value>
+  </data>
+  <data name="Property_MangerDirRX" xml:space="preserve">
+    <value>Manager</value>
+  </data>
+  <data name="ControlGroup_a01165135e0c4eff878369233eb2e2ab" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Resource_3bf6932f6e724dac98a8b3ecc51a73fa" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Control_3bf6932f6e724dac98a8b3ecc51a73fa_EmptyText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Resource_6f30f9f4f8be4450af88387bff34c91d" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Control_6f30f9f4f8be4450af88387bff34c91d_EmptyText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ControlGroup_6f9b2b0181714d038c0ee00558c2f9b4" xml:space="preserve">
+    <value>Note</value>
+  </data>
+  <data name="Resource_537a1454f7a4433dac84d3f1b6220413" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Control_537a1454f7a4433dac84d3f1b6220413_EmptyText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ControlGroup_7f84e66e461d45b6af4c1c786cf4427e" xml:space="preserve">
+    <value>Photo</value>
+  </data>
+  <data name="Resource_950f0404424d4db98ac332797b41f5ed" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Resource_eed275ac8ecd4713b4a7c62538d15f64" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Control_eed275ac8ecd4713b4a7c62538d15f64_EmptyText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Resource_151a86740f1e43758410f5a847a2f478" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Control_151a86740f1e43758410f5a847a2f478_EmptyText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Resource_7d3fe74917c14f7daf93c5a06f0ff356" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Control_7d3fe74917c14f7daf93c5a06f0ff356_EmptyText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Resource_6063a679a4ef4013a981516a8d5614cf" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Control_6063a679a4ef4013a981516a8d5614cf_EmptyText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ControlGroup_afaca6fb849e489688184e345e72a8b6" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ControlGroup_0b3bb168612249a59633c5b81742ae05" xml:space="preserve">
+    <value>Employee</value>
+  </data>
+  <data name="ControlGroup_8fd91d31742d436298477ab019995687" xml:space="preserve">
+    <value>Contact information</value>
+  </data>
+  <data name="Resource_50c7db6979c34492b7cede8dcd393913" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Resource_7111a8f90aac448fb27d1af9bd223726" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ControlGroup_2c0826c892f34f649c8aa320b064db91" xml:space="preserve">
+    <value>Notify by email</value>
+  </data>
+  <data name="Resource_ccba1597307a4bbca652a2ce60f6009b" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Control_ccba1597307a4bbca652a2ce60f6009b_EmptyText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Resource_fa5a42b89bb94b5d8352280a109a96c0" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Resource_b70c726b4c8c48f99167ed32c2057858" xml:space="preserve">
+    <value />
+  </data>
+</root>
