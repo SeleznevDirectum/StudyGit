@@ -58,4 +58,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="JobDisplayName_c68bc06f7b524a1991f95fa2514d357c" xml:space="preserve">
+    <value>Получить сотрудников из файла csv</value>
+  </data>
+  <data name="JobDescription_c68bc06f7b524a1991f95fa2514d357c" xml:space="preserve">
+    <value>Получение данных о сотрудниках из системы Rubi через csv файл.</value>
+  </data>
 </root>
