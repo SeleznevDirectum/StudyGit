@@ -455,8 +455,8 @@
     {
       "$type": "Sungero.Metadata.DateTimePropertyMetadata, Sungero.Metadata",
       "NameGuid": "ca3a7488-1d8b-48d1-85d6-627a42830c9c",
-      "Name": "EndlDateDirRX",
-      "Code": "EndlDateDirRX",
+      "Name": "EndDateDirRX",
+      "Code": "EndDateDirRX",
       "IsEnabled": false,
       "ListDataBinderTypeName": "Sungero.Presentation.CommonDataBinders.DateTimeEditorToDateTimeBinder",
       "PreviousPropertyGuid": "b89c34a6-4a2a-4165-ae2e-9ed231ba4389"

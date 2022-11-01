@@ -73,12 +73,12 @@
         {
           "Name": "StartDate",
           "IsNullable": true,
-          "TypeFullName": "global::System.String"
+          "TypeFullName": "global::System.Nullable<global::System.DateTime>"
         },
         {
           "Name": "EndDate",
           "IsNullable": true,
-          "TypeFullName": "global::System.String"
+          "TypeFullName": "global::System.Nullable<global::System.DateTime>"
         },
         {
           "Name": "LastName",

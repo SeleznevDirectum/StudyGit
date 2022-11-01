@@ -8,7 +8,7 @@ namespace DirRX.StudyIntegration.Structures.Module
 {
 
   /// <summary>
-  /// 
+  /// Структура, описывающая csv файл из RUBI. 
   /// </summary>
   [Public]
   partial class EmployeeInfo
@@ -17,8 +17,8 @@ namespace DirRX.StudyIntegration.Structures.Module
     public string Login {get; set;}
     public string BusinessEmail {get; set;}
     public string Status {get; set;}
-    public string StartDate {get; set;}
-    public string EndDate {get; set;}
+    public DateTime? StartDate {get; set;}
+    public DateTime? EndDate {get; set;}
     public string LastName {get; set;}
     public string FirstName {get; set;}
     public string MiddleName {get; set;}
