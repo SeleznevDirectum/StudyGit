@@ -61,7 +61,7 @@
   <data name="Property_WWIDDirRX" xml:space="preserve">
     <value>WWID</value>
   </data>
-  <data name="Property_EndlDateDirRX" xml:space="preserve">
+  <data name="Property_EndDateDirRX" xml:space="preserve">
     <value>Dismissal Date</value>
   </data>
   <data name="Property_StartDateDirRX" xml:space="preserve">

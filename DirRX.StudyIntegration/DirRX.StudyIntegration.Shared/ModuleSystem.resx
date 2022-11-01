@@ -64,4 +64,10 @@
   <data name="CoverTitle" xml:space="preserve">
     <value>StudyIntegration</value>
   </data>
+  <data name="JobDisplayName_c68bc06f7b524a1991f95fa2514d357c" xml:space="preserve">
+    <value>Get employees from csv file</value>
+  </data>
+  <data name="JobDescription_c68bc06f7b524a1991f95fa2514d357c" xml:space="preserve">
+    <value>Obtaining data on the functioning of the Rubi system through a csv file.</value>
+  </data>
 </root>
