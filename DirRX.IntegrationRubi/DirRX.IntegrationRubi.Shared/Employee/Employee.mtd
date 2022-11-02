@@ -487,7 +487,9 @@
   ],
   "PublicStructures": [],
   "ResourcesKeys": [
-    "CreateHistoryComment"
+    "CreateHistoryComment",
+    "UpdateHistoryComment",
+    "PropertyIsChangedComment"
   ],
   "RibbonCardMetadata": {
     "NameGuid": "08e9f6ed-0d21-4e69-b41b-d0921ca1285f",
