@@ -428,6 +428,10 @@
       "Versions": []
     }
   ],
+  "HandledEvents": [
+    "WriteHistoryServer",
+    "BeforeDeleteServer"
+  ],
   "IconResourcesKeys": [],
   "LayeredFromGuid": "b7905516-2be5-4931-961c-cb38d5677565",
   "OperationsClass": "",
@@ -482,7 +486,9 @@
     }
   ],
   "PublicStructures": [],
-  "ResourcesKeys": [],
+  "ResourcesKeys": [
+    "CreateHistoryComment"
+  ],
   "RibbonCardMetadata": {
     "NameGuid": "08e9f6ed-0d21-4e69-b41b-d0921ca1285f",
     "Name": "RibbonCard",
