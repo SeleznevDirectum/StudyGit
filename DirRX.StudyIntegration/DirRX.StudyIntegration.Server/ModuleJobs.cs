@@ -153,7 +153,7 @@ namespace DirRX.StudyIntegration.Server
             // Если найден руководитель сотрудника, то заполняется поле Руководитель.
             if(manager != null)
             {
-              if (!employee.MangerDirRX.Equals(manager))
+              if (!manager.Equals(employee.MangerDirRX))
                 employee.MangerDirRX = manager;
             }
             else
