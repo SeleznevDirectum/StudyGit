@@ -46,12 +46,12 @@ namespace DirRX.StudyIntegration.Server
                 employeeInfo.Status = employeeRubyInfo[Constants.Module.RubiStatusIndex];
                 
                 employeeInfo.StartDate = DateTime.ParseExact(employeeRubyInfo[Constants.Module.RubiStartDateIndex],
-                  "dd.mm.yyyy", CultureInfo.InvariantCulture);
+                  "dd.MM.yyyy", CultureInfo.InvariantCulture);
                 
                 employeeInfo.EndDate = String.IsNullOrEmpty(employeeRubyInfo[Constants.Module.RubiEndDateIndex]) ?
                   (DateTime?) null :
                   DateTime.ParseExact(employeeRubyInfo[Constants.Module.RubiEndDateIndex], 
-                    "dd.mm.yyyy", CultureInfo.InvariantCulture);
+                    "dd.MM.yyyy", CultureInfo.InvariantCulture);
                 
                 employeeInfo.LastName = employeeRubyInfo[Constants.Module.RubiLastNameIndex];
                 employeeInfo.FirstName = employeeRubyInfo[Constants.Module.RubiFirstNameIndex];
@@ -183,10 +183,10 @@ namespace DirRX.StudyIntegration.Server
             if (employee.Email != employeeInfo.BusinessEmail)
               employee.Email = employeeInfo.BusinessEmail;
             
-            if (employee.StartDateDirRX.Value.Date != employeeInfo.StartDate.Value.Date)
+            if (employee.StartDateDirRX != employeeInfo.StartDate)
               employee.StartDateDirRX = employeeInfo.StartDate;
             
-            if (employee.EndDateDirRX.Value.Date != employeeInfo.EndDate.Value.Date)
+            if (employee.EndDateDirRX != employeeInfo.EndDate)
               employee.EndDateDirRX = employeeInfo.EndDate;
             
             if (employee.WWIDDirRX != employeeInfo.WWID)
