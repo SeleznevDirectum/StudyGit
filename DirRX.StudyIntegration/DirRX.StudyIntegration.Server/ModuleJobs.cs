@@ -183,10 +183,10 @@ namespace DirRX.StudyIntegration.Server
             if (employee.Email != employeeInfo.BusinessEmail)
               employee.Email = employeeInfo.BusinessEmail;
             
-            if (employee.StartDateDirRX != employeeInfo.StartDate)
+            if (employee.StartDateDirRX.Value.Date != employeeInfo.StartDate.Value.Date)
               employee.StartDateDirRX = employeeInfo.StartDate;
             
-            if (employee.EndDateDirRX != employeeInfo.EndDate)
+            if (employee.EndDateDirRX.Value.Date != employeeInfo.EndDate.Value.Date)
               employee.EndDateDirRX = employeeInfo.EndDate;
             
             if (employee.WWIDDirRX != employeeInfo.WWID)
