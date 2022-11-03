@@ -36,10 +36,89 @@
   "Importance": "Medium",
   "InterfaceAssemblyName": "Sungero.Domain.Interfaces",
   "InterfaceNamespace": "DirRX.StudyIntegration",
-  "PublicStructures": [],
+  "Jobs": [
+    {
+      "NameGuid": "c68bc06f-7b52-4a19-91f9-5fa2514d357c",
+      "Name": "GetEmployeesFromCsv",
+      "GenerateHandler": true,
+      "MonthSchedule": "Monthly",
+      "StartAt": "1753-01-01T14:30:00"
+    }
+  ],
+  "PublicStructures": [
+    {
+      "Name": "EmployeeInfo",
+      "IsPublic": true,
+      "Properties": [
+        {
+          "Name": "WWID",
+          "IsNullable": true,
+          "TypeFullName": "global::System.String"
+        },
+        {
+          "Name": "Login",
+          "IsNullable": true,
+          "TypeFullName": "global::System.String"
+        },
+        {
+          "Name": "BusinessEmail",
+          "IsNullable": true,
+          "TypeFullName": "global::System.String"
+        },
+        {
+          "Name": "Status",
+          "IsNullable": true,
+          "TypeFullName": "global::System.String"
+        },
+        {
+          "Name": "StartDate",
+          "IsNullable": true,
+          "TypeFullName": "global::System.Nullable<global::System.DateTime>"
+        },
+        {
+          "Name": "EndDate",
+          "IsNullable": true,
+          "TypeFullName": "global::System.Nullable<global::System.DateTime>"
+        },
+        {
+          "Name": "LastName",
+          "IsNullable": true,
+          "TypeFullName": "global::System.String"
+        },
+        {
+          "Name": "FirstName",
+          "IsNullable": true,
+          "TypeFullName": "global::System.String"
+        },
+        {
+          "Name": "MiddleName",
+          "IsNullable": true,
+          "TypeFullName": "global::System.String"
+        },
+        {
+          "Name": "PositionName",
+          "IsNullable": true,
+          "TypeFullName": "global::System.String"
+        },
+        {
+          "Name": "Divcode",
+          "IsNullable": true,
+          "TypeFullName": "global::System.String"
+        },
+        {
+          "Name": "ManagerWWID",
+          "IsNullable": true,
+          "TypeFullName": "global::System.String"
+        }
+      ],
+      "StructureNamespace": "DirRX.StudyIntegration.Structures.Module"
+    }
+  ],
   "ResourceInterfaceAssemblyName": "Sungero.Domain.Interfaces",
   "ResourceInterfaceNamespace": "DirRX.StudyIntegration",
-  "ResourcesKeys": [],
+  "ResourcesKeys": [
+    "IntegrationWithRubiFilePath"
+  ],
   "ServerAssemblyName": "DirRX.StudyIntegration.Server",
   "ServerNamespace": "DirRX.StudyIntegration.Server",
   "SharedAssemblyName": "DirRX.StudyIntegration.Shared",
