@@ -1,0 +1,49 @@
+{
+  "$type": "Sungero.Metadata.ReportMetadata, Sungero.Reporting.Shared",
+  "NameGuid": "41bacd2e-d5e0-46a7-8305-45020bf824cd",
+  "Name": "EmployeesReport",
+  "AssociatedGuid": "9fa97003-c0ff-4aad-87c7-5af0a73b67ee",
+  "BaseGuid": "cef9a810-3f30-4eca-9fe3-30992af0b818",
+  "DataSources": [
+    {
+      "NameGuid": "73ae259b-007a-4c47-8978-d111c15854a5",
+      "Name": "Employees",
+      "EntityType": "e443fb5a-f293-44ad-b464-2ad1a573fb95"
+    }
+  ],
+  "DefaultExportFormat": "Excel",
+  "ExportFormats": [
+    "Excel"
+  ],
+  "HandledEvents": [
+    "BeforeExecuteClient"
+  ],
+  "IconResourcesKeys": [],
+  "Overridden": [
+    "PublicConstants",
+    "PublicStructures",
+    "DisplayName",
+    "ExportFormats",
+    "DefaultExportFormat",
+    "HandledEvents",
+    "Parameters",
+    "DataSources"
+  ],
+  "Parameters": [
+    {
+      "NameGuid": "d288de56-f94a-489f-863f-f1e61f8acfdb",
+      "Name": "StartDate",
+      "InternalDataTypeName": "System.DateTime",
+      "IsSimpleDataType": true
+    },
+    {
+      "NameGuid": "d6861427-bb9d-4a7c-8e21-f4f94a2f7bc2",
+      "Name": "EndDate",
+      "InternalDataTypeName": "System.DateTime",
+      "IsSimpleDataType": true
+    }
+  ],
+  "PublicStructures": [],
+  "ResourcesKeys": [],
+  "Versions": []
+}

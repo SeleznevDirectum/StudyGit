@@ -1,0 +1,1305 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReferencedAssemblies="System.dll&#13;&#10;System.Core.dll&#13;&#10;System.Drawing.dll&#13;&#10;System.Windows.Forms.dll&#13;&#10;System.Data.dll&#13;&#10;System.Xml.dll&#13;&#10;Sungero.Domain.Shared&#13;&#10;Sungero.CoreEntities.Shared&#13;&#10;Sungero.Reporting.Shared&#13;&#10;CommonLibrary&#13;&#10;Sungero.Domain.Interfaces&#13;&#10;DirRX.IntegrationRubi.Shared&#13;&#10;DirRX.IntegrationRubi.Server&#13;&#10;DirRX.StudyIntegration.Shared&#13;&#10;DirRX.StudyIntegration.Server" ReportInfo.CreatorVersion="2020.2.12.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Windows.Forms;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+using DirRX.IntegrationRubi;
+using Sungero.Domain.Shared;
+using Sungero.CoreEntities;
+using Sungero.Core;
+using Resources = DirRX.StudyIntegration.Reports.Resources;
+
+
+namespace FastReport
+{
+  public class ReportScript
+  {
+  }
+}
+  </ScriptText>
+  <Dictionary>
+    <SungeroSqlDataConnection Name="Sungero_Connection" Restrictions="DontModify, DontEdit, DontDelete, HideAllProperties" ConnectionStringExpression="[SungeroConnectionString]"/>
+    <SungeroEntityDataSource Name="Employees" Restrictions="DontModify, DontEdit, HideAllProperties" ReferenceName="Employees" DataType="System.Collections.Generic.List`1[[DirRX.IntegrationRubi.IEmployee, Sungero.Domain.Interfaces]]" Enabled="true" EntityTypeId="e443fb5a-f293-44ad-b464-2ad1a573fb95">
+      <Column Name="IsSystem" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+      <Column Name="Sid" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+      <Column Name="PersonalPhotoHash" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+      <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+      <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+      <Column Name="Name" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+      <Column Name="Description" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+      <Column Name="Phone" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+      <Column Name="Note" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+      <Column Name="Email" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+      <Column Name="NeedNotifyExpiredAssignments" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+      <Column Name="NeedNotifyNewAssignments" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+      <Column Name="PersonnelNumber" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+      <Column Name="NeedNotifyAssignmentsSummary" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+      <Column Name="WWIDDirRX" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+      <Column Name="EndDateDirRX" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.DateTime]]"/>
+      <Column Name="StartDateDirRX" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.DateTime]]"/>
+      <Column Name="PersonalPhoto" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Byte[]" BindableControl="Picture"/>
+      <Column Name="Login" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.CoreEntities.ILogin, Sungero.Domain.Shared">
+        <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+        <Column Name="LoginName" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+        <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+        <Column Name="PasswordLastChangeDate" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.DateTime]]"/>
+        <Column Name="LockoutEndDate" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.DateTime]]"/>
+        <Column Name="TypeAuthentication" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+        <Column Name="NeedChangePassword" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+      </Column>
+      <Column Name="Person" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Parties.IPerson, Sungero.Domain.Interfaces">
+        <Column Name="CanExchange" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+        <Column Name="Code" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+        <Column Name="Nonresident" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+        <Column Name="Account" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+        <Column Name="PSRN" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+        <Column Name="NCEO" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+        <Column Name="NCEA" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+        <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+        <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+        <Column Name="Name" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+        <Column Name="TIN" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+        <Column Name="LegalAddress" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+        <Column Name="PostalAddress" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+        <Column Name="Phones" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+        <Column Name="Email" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+        <Column Name="Homepage" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+        <Column Name="Note" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+        <Column Name="LastName" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+        <Column Name="FirstName" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+        <Column Name="MiddleName" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+        <Column Name="DateOfBirth" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.DateTime]]"/>
+        <Column Name="Sex" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+        <Column Name="INILA" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+        <Column Name="ShortName" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+        <SungeroEntityDataSource Name="615728cb1787e41667714dd7126714bf" Restrictions="DontModify, DontEdit, HideAllProperties" Alias="ExchangeBoxes" ReferenceName="ExchangeBoxes" DataType="Sungero.Domain.Shared.IChildEntityCollection`1[[Sungero.Parties.IPersonExchangeBoxes, Sungero.Domain.Interfaces]], Sungero.Domain.Shared" PropName="ExchangeBoxes" Enabled="true" EntityTypeId="1c0f1303-3d8f-4376-ae69-4ff22c457eb2">
+          <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+          <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+          <Column Name="OrganizationId" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="InvitationText" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="IsDefault" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+          <Column Name="CounterpartyBox" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="IsRoaming" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+          <Column Name="FtsId" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="Box" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.ExchangeCore.IBusinessUnitBox, Sungero.Domain.Interfaces">
+            <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+            <Column Name="Note" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Routing" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+            <Column Name="DeadlineInDays" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+            <Column Name="DeadlineInHours" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+            <Column Name="ConnectionStatus" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+            <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+            <Column Name="Name" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Login" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="OrganizationId" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="HasExchangeServiceCertificates" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="FtsId" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Password" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <SungeroEntityDataSource Name="740fe77b2860564f366be36f937c4628" Restrictions="DontModify, DontEdit, HideAllProperties" Alias="ExchangeServiceCertificates" ReferenceName="ExchangeServiceCertificates" DataType="Sungero.Domain.Shared.IChildEntityCollection`1[[Sungero.ExchangeCore.IBusinessUnitBoxExchangeServiceCertificates, Sungero.Domain.Interfaces]], Sungero.Domain.Shared" PropName="ExchangeServiceCertificates" Enabled="true" EntityTypeId="6b3c4688-1125-4f7e-a24b-7cd485aab591"/>
+            <Column Name="Responsible" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IEmployee, Sungero.Domain.Interfaces"/>
+            <Column Name="BusinessUnit" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IBusinessUnit, Sungero.Domain.Interfaces"/>
+            <Column Name="ExchangeService" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.ExchangeCore.IExchangeService, Sungero.Domain.Interfaces"/>
+            <Column Name="CertificateReceiptNotifications" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.CoreEntities.ICertificate, Sungero.Domain.Shared"/>
+          </Column>
+          <Column Name="Counterparty" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Parties.IPerson, Sungero.Domain.Interfaces">
+            <Column Name="CanExchange" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="Code" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Nonresident" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="Account" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="PSRN" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="NCEO" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="NCEA" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+            <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+            <Column Name="Name" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="TIN" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="LegalAddress" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="PostalAddress" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Phones" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Email" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Homepage" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Note" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="LastName" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="FirstName" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="MiddleName" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="DateOfBirth" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.DateTime]]"/>
+            <Column Name="Sex" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+            <Column Name="INILA" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="ShortName" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <SungeroEntityDataSource Name="ad0b0c81c125c7665010e1256c500774" Restrictions="DontModify, DontEdit, HideAllProperties" Alias="ExchangeBoxes" ReferenceName="ExchangeBoxes" DataType="Sungero.Domain.Shared.IChildEntityCollection`1[[Sungero.Parties.IPersonExchangeBoxes, Sungero.Domain.Interfaces]], Sungero.Domain.Shared" PropName="ExchangeBoxes" Enabled="true" EntityTypeId="1c0f1303-3d8f-4376-ae69-4ff22c457eb2"/>
+            <Column Name="Responsible" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IEmployee, Sungero.Domain.Interfaces"/>
+            <Column Name="Bank" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Parties.IBank, Sungero.Domain.Interfaces"/>
+            <Column Name="City" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Commons.ICity, Sungero.Domain.Interfaces"/>
+            <Column Name="Region" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Commons.IRegion, Sungero.Domain.Interfaces"/>
+          </Column>
+        </SungeroEntityDataSource>
+        <Column Name="Responsible" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IEmployee, Sungero.Domain.Interfaces">
+          <Column Name="IsSystem" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+          <Column Name="Sid" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="PersonalPhotoHash" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+          <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+          <Column Name="Name" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="Description" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="Phone" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="Note" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="Email" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="NeedNotifyExpiredAssignments" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+          <Column Name="NeedNotifyNewAssignments" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+          <Column Name="PersonnelNumber" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="NeedNotifyAssignmentsSummary" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+          <Column Name="PersonalPhoto" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Byte[]" BindableControl="Picture"/>
+          <Column Name="Login" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.CoreEntities.ILogin, Sungero.Domain.Shared">
+            <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+            <Column Name="LoginName" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+            <Column Name="PasswordLastChangeDate" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.DateTime]]"/>
+            <Column Name="LockoutEndDate" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.DateTime]]"/>
+            <Column Name="TypeAuthentication" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+            <Column Name="NeedChangePassword" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+          </Column>
+          <Column Name="Person" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Parties.IPerson, Sungero.Domain.Interfaces">
+            <Column Name="CanExchange" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="Code" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Nonresident" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="Account" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="PSRN" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="NCEO" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="NCEA" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+            <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+            <Column Name="Name" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="TIN" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="LegalAddress" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="PostalAddress" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Phones" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Email" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Homepage" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Note" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="LastName" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="FirstName" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="MiddleName" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="DateOfBirth" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.DateTime]]"/>
+            <Column Name="Sex" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+            <Column Name="INILA" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="ShortName" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <SungeroEntityDataSource Name="aa6825547c68e353c5b8c40738daa62f" Restrictions="DontModify, DontEdit, HideAllProperties" Alias="ExchangeBoxes" ReferenceName="ExchangeBoxes" DataType="Sungero.Domain.Shared.IChildEntityCollection`1[[Sungero.Parties.IPersonExchangeBoxes, Sungero.Domain.Interfaces]], Sungero.Domain.Shared" PropName="ExchangeBoxes" Enabled="true" EntityTypeId="1c0f1303-3d8f-4376-ae69-4ff22c457eb2"/>
+            <Column Name="Responsible" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IEmployee, Sungero.Domain.Interfaces"/>
+            <Column Name="Bank" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Parties.IBank, Sungero.Domain.Interfaces"/>
+            <Column Name="City" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Commons.ICity, Sungero.Domain.Interfaces"/>
+            <Column Name="Region" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Commons.IRegion, Sungero.Domain.Interfaces"/>
+          </Column>
+          <Column Name="Department" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IDepartment, Sungero.Domain.Interfaces">
+            <Column Name="IsSystem" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="Sid" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+            <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+            <Column Name="Name" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Description" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Phone" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="ShortName" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Note" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Code" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <SungeroEntityDataSource Name="13b7c6ba740d3d284ed261f3bee0c14d" Restrictions="DontModify, DontEdit, HideAllProperties" Alias="RecipientLinks" ReferenceName="RecipientLinks" DataType="Sungero.Domain.Shared.IChildEntityCollection`1[[Sungero.Company.IDepartmentRecipientLinks, Sungero.Domain.Interfaces]], Sungero.Domain.Shared" PropName="RecipientLinks" Enabled="true" EntityTypeId="a9e935d5-3b72-4e3a-9e43-711d8f32b84e"/>
+            <Column Name="Parent" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.CoreEntities.IGroup, Sungero.Domain.Shared"/>
+            <Column Name="Manager" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IEmployee, Sungero.Domain.Interfaces"/>
+            <Column Name="HeadOffice" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IDepartment, Sungero.Domain.Interfaces"/>
+            <Column Name="BusinessUnit" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IBusinessUnit, Sungero.Domain.Interfaces"/>
+          </Column>
+          <Column Name="JobTitle" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IJobTitle, Sungero.Domain.Interfaces">
+            <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+            <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+            <Column Name="Name" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Department" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IDepartment, Sungero.Domain.Interfaces"/>
+          </Column>
+        </Column>
+        <Column Name="Bank" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Parties.IBank, Sungero.Domain.Interfaces">
+          <Column Name="CanExchange" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+          <Column Name="Code" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="LegalAddress" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="PostalAddress" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="Phones" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="Email" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="Homepage" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="Note" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+          <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+          <Column Name="Name" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="TRRC" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="IsCardReadOnly" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+          <Column Name="LegalName" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="TIN" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="Nonresident" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+          <Column Name="PSRN" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="NCEO" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="NCEA" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="Account" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="BIC" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="CorrespondentAccount" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="IsSystem" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+          <Column Name="SWIFT" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <SungeroEntityDataSource Name="9ed3517c8a7971bdc39e836f412839bd" Restrictions="DontModify, DontEdit, HideAllProperties" Alias="ExchangeBoxes" ReferenceName="ExchangeBoxes" DataType="Sungero.Domain.Shared.IChildEntityCollection`1[[Sungero.Parties.IBankExchangeBoxes, Sungero.Domain.Interfaces]], Sungero.Domain.Shared" PropName="ExchangeBoxes" Enabled="true" EntityTypeId="b28d2948-f8b6-47e1-bdf0-a6f6be05e64c">
+            <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+            <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+            <Column Name="OrganizationId" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="InvitationText" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="IsDefault" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="CounterpartyBox" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="IsRoaming" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="FtsId" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Box" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.ExchangeCore.IBusinessUnitBox, Sungero.Domain.Interfaces"/>
+            <Column Name="Counterparty" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Parties.IBank, Sungero.Domain.Interfaces"/>
+          </SungeroEntityDataSource>
+          <Column Name="Region" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Commons.IRegion, Sungero.Domain.Interfaces">
+            <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+            <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+            <Column Name="Name" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Code" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Country" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Commons.ICountry, Sungero.Domain.Interfaces"/>
+          </Column>
+          <Column Name="City" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Commons.ICity, Sungero.Domain.Interfaces">
+            <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+            <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+            <Column Name="Name" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Region" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Commons.IRegion, Sungero.Domain.Interfaces"/>
+            <Column Name="Country" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Commons.ICountry, Sungero.Domain.Interfaces"/>
+          </Column>
+          <Column Name="Responsible" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IEmployee, Sungero.Domain.Interfaces">
+            <Column Name="IsSystem" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="Sid" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="PersonalPhotoHash" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+            <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+            <Column Name="Name" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Description" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Phone" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Note" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Email" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="NeedNotifyExpiredAssignments" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="NeedNotifyNewAssignments" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="PersonnelNumber" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="NeedNotifyAssignmentsSummary" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="PersonalPhoto" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Byte[]" BindableControl="Picture"/>
+            <Column Name="Login" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.CoreEntities.ILogin, Sungero.Domain.Shared"/>
+            <Column Name="Person" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Parties.IPerson, Sungero.Domain.Interfaces"/>
+            <Column Name="Department" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IDepartment, Sungero.Domain.Interfaces"/>
+            <Column Name="JobTitle" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IJobTitle, Sungero.Domain.Interfaces"/>
+          </Column>
+          <Column Name="Bank" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Parties.IBank, Sungero.Domain.Interfaces">
+            <Column Name="CanExchange" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="Code" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="LegalAddress" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="PostalAddress" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Phones" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Email" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Homepage" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Note" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+            <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+            <Column Name="Name" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="TRRC" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="IsCardReadOnly" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="LegalName" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="TIN" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Nonresident" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="PSRN" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="NCEO" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="NCEA" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Account" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="BIC" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="CorrespondentAccount" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="IsSystem" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="SWIFT" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <SungeroEntityDataSource Name="94d51a97a5bce1e37399c74828cf66bb" Restrictions="DontModify, DontEdit, HideAllProperties" Alias="ExchangeBoxes" ReferenceName="ExchangeBoxes" DataType="Sungero.Domain.Shared.IChildEntityCollection`1[[Sungero.Parties.IBankExchangeBoxes, Sungero.Domain.Interfaces]], Sungero.Domain.Shared" PropName="ExchangeBoxes" Enabled="true" EntityTypeId="b28d2948-f8b6-47e1-bdf0-a6f6be05e64c"/>
+            <Column Name="Region" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Commons.IRegion, Sungero.Domain.Interfaces"/>
+            <Column Name="City" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Commons.ICity, Sungero.Domain.Interfaces"/>
+            <Column Name="Responsible" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IEmployee, Sungero.Domain.Interfaces"/>
+            <Column Name="Bank" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Parties.IBank, Sungero.Domain.Interfaces"/>
+            <Column Name="HeadCompany" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Parties.ICompany, Sungero.Domain.Interfaces"/>
+          </Column>
+          <Column Name="HeadCompany" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Parties.ICompany, Sungero.Domain.Interfaces">
+            <Column Name="TIN" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="CanExchange" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="Code" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Note" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+            <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+            <Column Name="Name" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="TRRC" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="LegalAddress" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="PostalAddress" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Phones" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Email" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Homepage" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Nonresident" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="PSRN" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="NCEO" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="NCEA" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Account" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="IsCardReadOnly" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="LegalName" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <SungeroEntityDataSource Name="ab683e51d68b4ebf622bccc135427f26" Restrictions="DontModify, DontEdit, HideAllProperties" Alias="ExchangeBoxes" ReferenceName="ExchangeBoxes" DataType="Sungero.Domain.Shared.IChildEntityCollection`1[[Sungero.Parties.ICompanyExchangeBoxes, Sungero.Domain.Interfaces]], Sungero.Domain.Shared" PropName="ExchangeBoxes" Enabled="true" EntityTypeId="392f91ab-efc1-450c-8604-11bf6c38e0f0"/>
+            <Column Name="Responsible" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IEmployee, Sungero.Domain.Interfaces"/>
+            <Column Name="Bank" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Parties.IBank, Sungero.Domain.Interfaces"/>
+            <Column Name="Region" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Commons.IRegion, Sungero.Domain.Interfaces"/>
+            <Column Name="City" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Commons.ICity, Sungero.Domain.Interfaces"/>
+            <Column Name="HeadCompany" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Parties.ICompany, Sungero.Domain.Interfaces"/>
+          </Column>
+        </Column>
+        <Column Name="City" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Commons.ICity, Sungero.Domain.Interfaces">
+          <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+          <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+          <Column Name="Name" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="Region" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Commons.IRegion, Sungero.Domain.Interfaces">
+            <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+            <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+            <Column Name="Name" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Code" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Country" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Commons.ICountry, Sungero.Domain.Interfaces"/>
+          </Column>
+          <Column Name="Country" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Commons.ICountry, Sungero.Domain.Interfaces">
+            <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+            <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+            <Column Name="Name" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Code" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          </Column>
+        </Column>
+        <Column Name="Region" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Commons.IRegion, Sungero.Domain.Interfaces">
+          <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+          <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+          <Column Name="Name" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="Code" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="Country" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Commons.ICountry, Sungero.Domain.Interfaces">
+            <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+            <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+            <Column Name="Name" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Code" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          </Column>
+        </Column>
+      </Column>
+      <Column Name="Department" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IDepartment, Sungero.Domain.Interfaces">
+        <Column Name="IsSystem" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+        <Column Name="Sid" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+        <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+        <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+        <Column Name="Name" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+        <Column Name="Description" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+        <Column Name="Phone" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+        <Column Name="ShortName" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+        <Column Name="Note" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+        <Column Name="Code" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+        <SungeroEntityDataSource Name="720a6f56181847dcbcfc4d4f4fbfb4c8" Restrictions="DontModify, DontEdit, HideAllProperties" Alias="RecipientLinks" ReferenceName="RecipientLinks" DataType="Sungero.Domain.Shared.IChildEntityCollection`1[[Sungero.Company.IDepartmentRecipientLinks, Sungero.Domain.Interfaces]], Sungero.Domain.Shared" PropName="RecipientLinks" Enabled="true" EntityTypeId="a9e935d5-3b72-4e3a-9e43-711d8f32b84e">
+          <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+          <Column Name="Sid" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="Member" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IEmployee, Sungero.Domain.Interfaces">
+            <Column Name="IsSystem" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="Sid" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="PersonalPhotoHash" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+            <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+            <Column Name="Name" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Description" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Phone" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Note" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Email" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="NeedNotifyExpiredAssignments" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="NeedNotifyNewAssignments" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="PersonnelNumber" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="NeedNotifyAssignmentsSummary" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="PersonalPhoto" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Byte[]" BindableControl="Picture"/>
+            <Column Name="Login" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.CoreEntities.ILogin, Sungero.Domain.Shared"/>
+            <Column Name="Person" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Parties.IPerson, Sungero.Domain.Interfaces"/>
+            <Column Name="Department" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IDepartment, Sungero.Domain.Interfaces"/>
+            <Column Name="JobTitle" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IJobTitle, Sungero.Domain.Interfaces"/>
+          </Column>
+          <Column Name="Group" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IDepartment, Sungero.Domain.Interfaces">
+            <Column Name="IsSystem" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="Sid" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+            <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+            <Column Name="Name" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Description" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Phone" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="ShortName" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Note" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Code" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <SungeroEntityDataSource Name="6a24d7f5e181e8c6456242c2b1660ed1" Restrictions="DontModify, DontEdit, HideAllProperties" Alias="RecipientLinks" ReferenceName="RecipientLinks" DataType="Sungero.Domain.Shared.IChildEntityCollection`1[[Sungero.Company.IDepartmentRecipientLinks, Sungero.Domain.Interfaces]], Sungero.Domain.Shared" PropName="RecipientLinks" Enabled="true" EntityTypeId="a9e935d5-3b72-4e3a-9e43-711d8f32b84e"/>
+            <Column Name="Parent" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.CoreEntities.IGroup, Sungero.Domain.Shared"/>
+            <Column Name="Manager" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IEmployee, Sungero.Domain.Interfaces"/>
+            <Column Name="HeadOffice" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IDepartment, Sungero.Domain.Interfaces"/>
+            <Column Name="BusinessUnit" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IBusinessUnit, Sungero.Domain.Interfaces"/>
+          </Column>
+        </SungeroEntityDataSource>
+        <Column Name="Parent" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.CoreEntities.IGroup, Sungero.Domain.Shared">
+          <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+          <Column Name="Description" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="IsSystem" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+          <Column Name="Sid" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="Name" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+          <SungeroEntityDataSource Name="8531cfd191cd479071d0f4d2430f2b82" Restrictions="DontModify, DontEdit, HideAllProperties" Alias="RecipientLinks" ReferenceName="RecipientLinks" DataType="Sungero.Domain.Shared.IChildEntityCollection`1[[Sungero.CoreEntities.IGroupRecipientLinks, Sungero.Domain.Shared]], Sungero.Domain.Shared" PropName="RecipientLinks" Enabled="true" EntityTypeId="20784da1-10a0-4ce1-97de-8a075142c47a">
+            <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+            <Column Name="Sid" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Member" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.CoreEntities.IRecipient, Sungero.Domain.Shared"/>
+            <Column Name="Group" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.CoreEntities.IGroup, Sungero.Domain.Shared"/>
+          </SungeroEntityDataSource>
+          <Column Name="Parent" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.CoreEntities.IGroup, Sungero.Domain.Shared">
+            <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+            <Column Name="Description" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="IsSystem" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="Sid" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Name" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+            <SungeroEntityDataSource Name="e800d646f9ffa69ea8effd4e854ceffa" Restrictions="DontModify, DontEdit, HideAllProperties" Alias="RecipientLinks" ReferenceName="RecipientLinks" DataType="Sungero.Domain.Shared.IChildEntityCollection`1[[Sungero.CoreEntities.IGroupRecipientLinks, Sungero.Domain.Shared]], Sungero.Domain.Shared" PropName="RecipientLinks" Enabled="true" EntityTypeId="20784da1-10a0-4ce1-97de-8a075142c47a"/>
+            <Column Name="Parent" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.CoreEntities.IGroup, Sungero.Domain.Shared"/>
+          </Column>
+        </Column>
+        <Column Name="Manager" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IEmployee, Sungero.Domain.Interfaces">
+          <Column Name="IsSystem" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+          <Column Name="Sid" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="PersonalPhotoHash" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+          <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+          <Column Name="Name" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="Description" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="Phone" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="Note" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="Email" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="NeedNotifyExpiredAssignments" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+          <Column Name="NeedNotifyNewAssignments" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+          <Column Name="PersonnelNumber" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="NeedNotifyAssignmentsSummary" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+          <Column Name="PersonalPhoto" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Byte[]" BindableControl="Picture"/>
+          <Column Name="Login" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.CoreEntities.ILogin, Sungero.Domain.Shared">
+            <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+            <Column Name="LoginName" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+            <Column Name="PasswordLastChangeDate" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.DateTime]]"/>
+            <Column Name="LockoutEndDate" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.DateTime]]"/>
+            <Column Name="TypeAuthentication" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+            <Column Name="NeedChangePassword" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+          </Column>
+          <Column Name="Person" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Parties.IPerson, Sungero.Domain.Interfaces">
+            <Column Name="CanExchange" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="Code" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Nonresident" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="Account" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="PSRN" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="NCEO" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="NCEA" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+            <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+            <Column Name="Name" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="TIN" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="LegalAddress" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="PostalAddress" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Phones" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Email" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Homepage" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Note" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="LastName" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="FirstName" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="MiddleName" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="DateOfBirth" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.DateTime]]"/>
+            <Column Name="Sex" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+            <Column Name="INILA" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="ShortName" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <SungeroEntityDataSource Name="42031cf02851f5a7312886ea2075068f" Restrictions="DontModify, DontEdit, HideAllProperties" Alias="ExchangeBoxes" ReferenceName="ExchangeBoxes" DataType="Sungero.Domain.Shared.IChildEntityCollection`1[[Sungero.Parties.IPersonExchangeBoxes, Sungero.Domain.Interfaces]], Sungero.Domain.Shared" PropName="ExchangeBoxes" Enabled="true" EntityTypeId="1c0f1303-3d8f-4376-ae69-4ff22c457eb2"/>
+            <Column Name="Responsible" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IEmployee, Sungero.Domain.Interfaces"/>
+            <Column Name="Bank" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Parties.IBank, Sungero.Domain.Interfaces"/>
+            <Column Name="City" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Commons.ICity, Sungero.Domain.Interfaces"/>
+            <Column Name="Region" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Commons.IRegion, Sungero.Domain.Interfaces"/>
+          </Column>
+          <Column Name="Department" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IDepartment, Sungero.Domain.Interfaces">
+            <Column Name="IsSystem" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="Sid" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+            <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+            <Column Name="Name" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Description" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Phone" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="ShortName" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Note" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Code" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <SungeroEntityDataSource Name="4b7788bc51fa216be4740a7aa567e17c" Restrictions="DontModify, DontEdit, HideAllProperties" Alias="RecipientLinks" ReferenceName="RecipientLinks" DataType="Sungero.Domain.Shared.IChildEntityCollection`1[[Sungero.Company.IDepartmentRecipientLinks, Sungero.Domain.Interfaces]], Sungero.Domain.Shared" PropName="RecipientLinks" Enabled="true" EntityTypeId="a9e935d5-3b72-4e3a-9e43-711d8f32b84e"/>
+            <Column Name="Parent" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.CoreEntities.IGroup, Sungero.Domain.Shared"/>
+            <Column Name="Manager" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IEmployee, Sungero.Domain.Interfaces"/>
+            <Column Name="HeadOffice" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IDepartment, Sungero.Domain.Interfaces"/>
+            <Column Name="BusinessUnit" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IBusinessUnit, Sungero.Domain.Interfaces"/>
+          </Column>
+          <Column Name="JobTitle" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IJobTitle, Sungero.Domain.Interfaces">
+            <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+            <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+            <Column Name="Name" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Department" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IDepartment, Sungero.Domain.Interfaces"/>
+          </Column>
+        </Column>
+        <Column Name="HeadOffice" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IDepartment, Sungero.Domain.Interfaces">
+          <Column Name="IsSystem" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+          <Column Name="Sid" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+          <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+          <Column Name="Name" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="Description" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="Phone" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="ShortName" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="Note" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="Code" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <SungeroEntityDataSource Name="716606e1c086f80f999685b33b0d2d92" Restrictions="DontModify, DontEdit, HideAllProperties" Alias="RecipientLinks" ReferenceName="RecipientLinks" DataType="Sungero.Domain.Shared.IChildEntityCollection`1[[Sungero.Company.IDepartmentRecipientLinks, Sungero.Domain.Interfaces]], Sungero.Domain.Shared" PropName="RecipientLinks" Enabled="true" EntityTypeId="a9e935d5-3b72-4e3a-9e43-711d8f32b84e">
+            <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+            <Column Name="Sid" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Member" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IEmployee, Sungero.Domain.Interfaces"/>
+            <Column Name="Group" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IDepartment, Sungero.Domain.Interfaces"/>
+          </SungeroEntityDataSource>
+          <Column Name="Parent" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.CoreEntities.IGroup, Sungero.Domain.Shared">
+            <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+            <Column Name="Description" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="IsSystem" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="Sid" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Name" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+            <SungeroEntityDataSource Name="80a3203d73d96b2b9322abe7bed43ab3" Restrictions="DontModify, DontEdit, HideAllProperties" Alias="RecipientLinks" ReferenceName="RecipientLinks" DataType="Sungero.Domain.Shared.IChildEntityCollection`1[[Sungero.CoreEntities.IGroupRecipientLinks, Sungero.Domain.Shared]], Sungero.Domain.Shared" PropName="RecipientLinks" Enabled="true" EntityTypeId="20784da1-10a0-4ce1-97de-8a075142c47a"/>
+            <Column Name="Parent" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.CoreEntities.IGroup, Sungero.Domain.Shared"/>
+          </Column>
+          <Column Name="Manager" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IEmployee, Sungero.Domain.Interfaces">
+            <Column Name="IsSystem" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="Sid" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="PersonalPhotoHash" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+            <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+            <Column Name="Name" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Description" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Phone" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Note" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Email" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="NeedNotifyExpiredAssignments" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="NeedNotifyNewAssignments" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="PersonnelNumber" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="NeedNotifyAssignmentsSummary" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="PersonalPhoto" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Byte[]" BindableControl="Picture"/>
+            <Column Name="Login" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.CoreEntities.ILogin, Sungero.Domain.Shared"/>
+            <Column Name="Person" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Parties.IPerson, Sungero.Domain.Interfaces"/>
+            <Column Name="Department" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IDepartment, Sungero.Domain.Interfaces"/>
+            <Column Name="JobTitle" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IJobTitle, Sungero.Domain.Interfaces"/>
+          </Column>
+          <Column Name="HeadOffice" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IDepartment, Sungero.Domain.Interfaces">
+            <Column Name="IsSystem" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="Sid" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+            <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+            <Column Name="Name" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Description" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Phone" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="ShortName" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Note" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Code" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <SungeroEntityDataSource Name="2eebe05367f62f651d03fac6a408849f" Restrictions="DontModify, DontEdit, HideAllProperties" Alias="RecipientLinks" ReferenceName="RecipientLinks" DataType="Sungero.Domain.Shared.IChildEntityCollection`1[[Sungero.Company.IDepartmentRecipientLinks, Sungero.Domain.Interfaces]], Sungero.Domain.Shared" PropName="RecipientLinks" Enabled="true" EntityTypeId="a9e935d5-3b72-4e3a-9e43-711d8f32b84e"/>
+            <Column Name="Parent" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.CoreEntities.IGroup, Sungero.Domain.Shared"/>
+            <Column Name="Manager" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IEmployee, Sungero.Domain.Interfaces"/>
+            <Column Name="HeadOffice" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IDepartment, Sungero.Domain.Interfaces"/>
+            <Column Name="BusinessUnit" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IBusinessUnit, Sungero.Domain.Interfaces"/>
+          </Column>
+          <Column Name="BusinessUnit" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IBusinessUnit, Sungero.Domain.Interfaces">
+            <Column Name="Description" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="IsSystem" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="Sid" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+            <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+            <Column Name="Name" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="TIN" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="TRRC" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Phones" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="LegalName" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="LegalAddress" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="PostalAddress" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Note" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Email" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Homepage" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="PSRN" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="NCEO" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="NCEA" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Account" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Code" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Nonresident" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <SungeroEntityDataSource Name="42d6565b7e8b4dd94d150b26bf2cc229" Restrictions="DontModify, DontEdit, HideAllProperties" Alias="RecipientLinks" ReferenceName="RecipientLinks" DataType="Sungero.Domain.Shared.IChildEntityCollection`1[[Sungero.Company.IBusinessUnitRecipientLinks, Sungero.Domain.Interfaces]], Sungero.Domain.Shared" PropName="RecipientLinks" Enabled="true" EntityTypeId="2e3f162d-ef11-4ebc-84ef-c39069e5e94e"/>
+            <Column Name="Parent" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.CoreEntities.IGroup, Sungero.Domain.Shared"/>
+            <Column Name="City" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Commons.ICity, Sungero.Domain.Interfaces"/>
+            <Column Name="Region" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Commons.IRegion, Sungero.Domain.Interfaces"/>
+            <Column Name="HeadCompany" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IBusinessUnit, Sungero.Domain.Interfaces"/>
+            <Column Name="Company" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Parties.ICompany, Sungero.Domain.Interfaces"/>
+            <Column Name="CEO" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IEmployee, Sungero.Domain.Interfaces"/>
+            <Column Name="Bank" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Parties.IBank, Sungero.Domain.Interfaces"/>
+          </Column>
+        </Column>
+        <Column Name="BusinessUnit" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IBusinessUnit, Sungero.Domain.Interfaces">
+          <Column Name="Description" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="IsSystem" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+          <Column Name="Sid" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+          <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+          <Column Name="Name" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="TIN" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="TRRC" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="Phones" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="LegalName" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="LegalAddress" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="PostalAddress" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="Note" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="Email" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="Homepage" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="PSRN" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="NCEO" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="NCEA" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="Account" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="Code" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="Nonresident" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+          <SungeroEntityDataSource Name="b4af51622a25ab888f422dcafc2a7d87" Restrictions="DontModify, DontEdit, HideAllProperties" Alias="RecipientLinks" ReferenceName="RecipientLinks" DataType="Sungero.Domain.Shared.IChildEntityCollection`1[[Sungero.Company.IBusinessUnitRecipientLinks, Sungero.Domain.Interfaces]], Sungero.Domain.Shared" PropName="RecipientLinks" Enabled="true" EntityTypeId="2e3f162d-ef11-4ebc-84ef-c39069e5e94e">
+            <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+            <Column Name="Sid" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Member" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.CoreEntities.IRecipient, Sungero.Domain.Shared"/>
+            <Column Name="Group" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IBusinessUnit, Sungero.Domain.Interfaces"/>
+          </SungeroEntityDataSource>
+          <Column Name="Parent" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.CoreEntities.IGroup, Sungero.Domain.Shared">
+            <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+            <Column Name="Description" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="IsSystem" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="Sid" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Name" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+            <SungeroEntityDataSource Name="be7f071646a691c649f2ea613c6d8fc8" Restrictions="DontModify, DontEdit, HideAllProperties" Alias="RecipientLinks" ReferenceName="RecipientLinks" DataType="Sungero.Domain.Shared.IChildEntityCollection`1[[Sungero.CoreEntities.IGroupRecipientLinks, Sungero.Domain.Shared]], Sungero.Domain.Shared" PropName="RecipientLinks" Enabled="true" EntityTypeId="20784da1-10a0-4ce1-97de-8a075142c47a"/>
+            <Column Name="Parent" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.CoreEntities.IGroup, Sungero.Domain.Shared"/>
+          </Column>
+          <Column Name="City" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Commons.ICity, Sungero.Domain.Interfaces">
+            <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+            <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+            <Column Name="Name" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Region" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Commons.IRegion, Sungero.Domain.Interfaces"/>
+            <Column Name="Country" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Commons.ICountry, Sungero.Domain.Interfaces"/>
+          </Column>
+          <Column Name="Region" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Commons.IRegion, Sungero.Domain.Interfaces">
+            <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+            <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+            <Column Name="Name" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Code" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Country" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Commons.ICountry, Sungero.Domain.Interfaces"/>
+          </Column>
+          <Column Name="HeadCompany" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IBusinessUnit, Sungero.Domain.Interfaces">
+            <Column Name="Description" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="IsSystem" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="Sid" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+            <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+            <Column Name="Name" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="TIN" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="TRRC" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Phones" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="LegalName" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="LegalAddress" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="PostalAddress" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Note" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Email" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Homepage" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="PSRN" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="NCEO" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="NCEA" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Account" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Code" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Nonresident" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <SungeroEntityDataSource Name="e40daf47203a900b7edfb1a998ed9eee" Restrictions="DontModify, DontEdit, HideAllProperties" Alias="RecipientLinks" ReferenceName="RecipientLinks" DataType="Sungero.Domain.Shared.IChildEntityCollection`1[[Sungero.Company.IBusinessUnitRecipientLinks, Sungero.Domain.Interfaces]], Sungero.Domain.Shared" PropName="RecipientLinks" Enabled="true" EntityTypeId="2e3f162d-ef11-4ebc-84ef-c39069e5e94e"/>
+            <Column Name="Parent" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.CoreEntities.IGroup, Sungero.Domain.Shared"/>
+            <Column Name="City" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Commons.ICity, Sungero.Domain.Interfaces"/>
+            <Column Name="Region" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Commons.IRegion, Sungero.Domain.Interfaces"/>
+            <Column Name="HeadCompany" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IBusinessUnit, Sungero.Domain.Interfaces"/>
+            <Column Name="Company" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Parties.ICompany, Sungero.Domain.Interfaces"/>
+            <Column Name="CEO" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IEmployee, Sungero.Domain.Interfaces"/>
+            <Column Name="Bank" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Parties.IBank, Sungero.Domain.Interfaces"/>
+          </Column>
+          <Column Name="Company" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Parties.ICompany, Sungero.Domain.Interfaces">
+            <Column Name="TIN" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="CanExchange" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="Code" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Note" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+            <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+            <Column Name="Name" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="TRRC" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="LegalAddress" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="PostalAddress" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Phones" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Email" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Homepage" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Nonresident" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="PSRN" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="NCEO" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="NCEA" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Account" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="IsCardReadOnly" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="LegalName" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <SungeroEntityDataSource Name="75e6cc9588059ffb2d5abae954bf2081" Restrictions="DontModify, DontEdit, HideAllProperties" Alias="ExchangeBoxes" ReferenceName="ExchangeBoxes" DataType="Sungero.Domain.Shared.IChildEntityCollection`1[[Sungero.Parties.ICompanyExchangeBoxes, Sungero.Domain.Interfaces]], Sungero.Domain.Shared" PropName="ExchangeBoxes" Enabled="true" EntityTypeId="392f91ab-efc1-450c-8604-11bf6c38e0f0"/>
+            <Column Name="Responsible" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IEmployee, Sungero.Domain.Interfaces"/>
+            <Column Name="Bank" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Parties.IBank, Sungero.Domain.Interfaces"/>
+            <Column Name="Region" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Commons.IRegion, Sungero.Domain.Interfaces"/>
+            <Column Name="City" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Commons.ICity, Sungero.Domain.Interfaces"/>
+            <Column Name="HeadCompany" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Parties.ICompany, Sungero.Domain.Interfaces"/>
+          </Column>
+          <Column Name="CEO" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IEmployee, Sungero.Domain.Interfaces">
+            <Column Name="IsSystem" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="Sid" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="PersonalPhotoHash" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+            <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+            <Column Name="Name" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Description" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Phone" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Note" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Email" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="NeedNotifyExpiredAssignments" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="NeedNotifyNewAssignments" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="PersonnelNumber" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="NeedNotifyAssignmentsSummary" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="PersonalPhoto" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Byte[]" BindableControl="Picture"/>
+            <Column Name="Login" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.CoreEntities.ILogin, Sungero.Domain.Shared"/>
+            <Column Name="Person" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Parties.IPerson, Sungero.Domain.Interfaces"/>
+            <Column Name="Department" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IDepartment, Sungero.Domain.Interfaces"/>
+            <Column Name="JobTitle" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IJobTitle, Sungero.Domain.Interfaces"/>
+          </Column>
+          <Column Name="Bank" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Parties.IBank, Sungero.Domain.Interfaces">
+            <Column Name="CanExchange" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="Code" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="LegalAddress" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="PostalAddress" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Phones" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Email" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Homepage" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Note" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+            <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+            <Column Name="Name" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="TRRC" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="IsCardReadOnly" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="LegalName" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="TIN" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Nonresident" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="PSRN" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="NCEO" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="NCEA" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Account" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="BIC" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="CorrespondentAccount" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="IsSystem" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="SWIFT" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <SungeroEntityDataSource Name="7423de11a4a4f7b466fce5a040cba7fc" Restrictions="DontModify, DontEdit, HideAllProperties" Alias="ExchangeBoxes" ReferenceName="ExchangeBoxes" DataType="Sungero.Domain.Shared.IChildEntityCollection`1[[Sungero.Parties.IBankExchangeBoxes, Sungero.Domain.Interfaces]], Sungero.Domain.Shared" PropName="ExchangeBoxes" Enabled="true" EntityTypeId="b28d2948-f8b6-47e1-bdf0-a6f6be05e64c"/>
+            <Column Name="Region" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Commons.IRegion, Sungero.Domain.Interfaces"/>
+            <Column Name="City" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Commons.ICity, Sungero.Domain.Interfaces"/>
+            <Column Name="Responsible" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IEmployee, Sungero.Domain.Interfaces"/>
+            <Column Name="Bank" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Parties.IBank, Sungero.Domain.Interfaces"/>
+            <Column Name="HeadCompany" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Parties.ICompany, Sungero.Domain.Interfaces"/>
+          </Column>
+        </Column>
+      </Column>
+      <Column Name="JobTitle" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IJobTitle, Sungero.Domain.Interfaces">
+        <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+        <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+        <Column Name="Name" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+        <Column Name="Department" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IDepartment, Sungero.Domain.Interfaces">
+          <Column Name="IsSystem" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+          <Column Name="Sid" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+          <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+          <Column Name="Name" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="Description" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="Phone" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="ShortName" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="Note" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="Code" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <SungeroEntityDataSource Name="55f589e7d5554ad7550e6a02c3d0e828" Restrictions="DontModify, DontEdit, HideAllProperties" Alias="RecipientLinks" ReferenceName="RecipientLinks" DataType="Sungero.Domain.Shared.IChildEntityCollection`1[[Sungero.Company.IDepartmentRecipientLinks, Sungero.Domain.Interfaces]], Sungero.Domain.Shared" PropName="RecipientLinks" Enabled="true" EntityTypeId="a9e935d5-3b72-4e3a-9e43-711d8f32b84e">
+            <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+            <Column Name="Sid" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Member" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IEmployee, Sungero.Domain.Interfaces"/>
+            <Column Name="Group" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IDepartment, Sungero.Domain.Interfaces"/>
+          </SungeroEntityDataSource>
+          <Column Name="Parent" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.CoreEntities.IGroup, Sungero.Domain.Shared">
+            <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+            <Column Name="Description" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="IsSystem" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="Sid" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Name" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+            <SungeroEntityDataSource Name="a396b9acf4f65c4db8c9e4082ccb2bc0" Restrictions="DontModify, DontEdit, HideAllProperties" Alias="RecipientLinks" ReferenceName="RecipientLinks" DataType="Sungero.Domain.Shared.IChildEntityCollection`1[[Sungero.CoreEntities.IGroupRecipientLinks, Sungero.Domain.Shared]], Sungero.Domain.Shared" PropName="RecipientLinks" Enabled="true" EntityTypeId="20784da1-10a0-4ce1-97de-8a075142c47a"/>
+            <Column Name="Parent" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.CoreEntities.IGroup, Sungero.Domain.Shared"/>
+          </Column>
+          <Column Name="Manager" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IEmployee, Sungero.Domain.Interfaces">
+            <Column Name="IsSystem" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="Sid" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="PersonalPhotoHash" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+            <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+            <Column Name="Name" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Description" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Phone" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Note" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Email" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="NeedNotifyExpiredAssignments" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="NeedNotifyNewAssignments" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="PersonnelNumber" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="NeedNotifyAssignmentsSummary" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="PersonalPhoto" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Byte[]" BindableControl="Picture"/>
+            <Column Name="Login" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.CoreEntities.ILogin, Sungero.Domain.Shared"/>
+            <Column Name="Person" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Parties.IPerson, Sungero.Domain.Interfaces"/>
+            <Column Name="Department" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IDepartment, Sungero.Domain.Interfaces"/>
+            <Column Name="JobTitle" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IJobTitle, Sungero.Domain.Interfaces"/>
+          </Column>
+          <Column Name="HeadOffice" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IDepartment, Sungero.Domain.Interfaces">
+            <Column Name="IsSystem" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="Sid" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+            <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+            <Column Name="Name" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Description" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Phone" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="ShortName" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Note" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Code" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <SungeroEntityDataSource Name="945cbcdc9ef848f126c14e9440cd3349" Restrictions="DontModify, DontEdit, HideAllProperties" Alias="RecipientLinks" ReferenceName="RecipientLinks" DataType="Sungero.Domain.Shared.IChildEntityCollection`1[[Sungero.Company.IDepartmentRecipientLinks, Sungero.Domain.Interfaces]], Sungero.Domain.Shared" PropName="RecipientLinks" Enabled="true" EntityTypeId="a9e935d5-3b72-4e3a-9e43-711d8f32b84e"/>
+            <Column Name="Parent" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.CoreEntities.IGroup, Sungero.Domain.Shared"/>
+            <Column Name="Manager" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IEmployee, Sungero.Domain.Interfaces"/>
+            <Column Name="HeadOffice" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IDepartment, Sungero.Domain.Interfaces"/>
+            <Column Name="BusinessUnit" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IBusinessUnit, Sungero.Domain.Interfaces"/>
+          </Column>
+          <Column Name="BusinessUnit" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IBusinessUnit, Sungero.Domain.Interfaces">
+            <Column Name="Description" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="IsSystem" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="Sid" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+            <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+            <Column Name="Name" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="TIN" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="TRRC" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Phones" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="LegalName" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="LegalAddress" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="PostalAddress" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Note" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Email" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Homepage" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="PSRN" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="NCEO" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="NCEA" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Account" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Code" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Nonresident" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <SungeroEntityDataSource Name="0dc5191683ce0ca53ad7efac9517ca94" Restrictions="DontModify, DontEdit, HideAllProperties" Alias="RecipientLinks" ReferenceName="RecipientLinks" DataType="Sungero.Domain.Shared.IChildEntityCollection`1[[Sungero.Company.IBusinessUnitRecipientLinks, Sungero.Domain.Interfaces]], Sungero.Domain.Shared" PropName="RecipientLinks" Enabled="true" EntityTypeId="2e3f162d-ef11-4ebc-84ef-c39069e5e94e"/>
+            <Column Name="Parent" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.CoreEntities.IGroup, Sungero.Domain.Shared"/>
+            <Column Name="City" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Commons.ICity, Sungero.Domain.Interfaces"/>
+            <Column Name="Region" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Commons.IRegion, Sungero.Domain.Interfaces"/>
+            <Column Name="HeadCompany" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IBusinessUnit, Sungero.Domain.Interfaces"/>
+            <Column Name="Company" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Parties.ICompany, Sungero.Domain.Interfaces"/>
+            <Column Name="CEO" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IEmployee, Sungero.Domain.Interfaces"/>
+            <Column Name="Bank" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Parties.IBank, Sungero.Domain.Interfaces"/>
+          </Column>
+        </Column>
+      </Column>
+      <Column Name="MangerDirRX" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="DirRX.IntegrationRubi.IEmployee, Sungero.Domain.Interfaces">
+        <Column Name="IsSystem" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+        <Column Name="Sid" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+        <Column Name="PersonalPhotoHash" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+        <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+        <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+        <Column Name="Name" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+        <Column Name="Description" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+        <Column Name="Phone" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+        <Column Name="Note" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+        <Column Name="Email" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+        <Column Name="NeedNotifyExpiredAssignments" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+        <Column Name="NeedNotifyNewAssignments" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+        <Column Name="PersonnelNumber" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+        <Column Name="NeedNotifyAssignmentsSummary" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+        <Column Name="WWIDDirRX" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+        <Column Name="EndDateDirRX" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.DateTime]]"/>
+        <Column Name="StartDateDirRX" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.DateTime]]"/>
+        <Column Name="PersonalPhoto" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Byte[]" BindableControl="Picture"/>
+        <Column Name="Login" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.CoreEntities.ILogin, Sungero.Domain.Shared">
+          <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+          <Column Name="LoginName" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+          <Column Name="PasswordLastChangeDate" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.DateTime]]"/>
+          <Column Name="LockoutEndDate" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.DateTime]]"/>
+          <Column Name="TypeAuthentication" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+          <Column Name="NeedChangePassword" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+        </Column>
+        <Column Name="Person" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Parties.IPerson, Sungero.Domain.Interfaces">
+          <Column Name="CanExchange" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+          <Column Name="Code" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="Nonresident" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+          <Column Name="Account" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="PSRN" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="NCEO" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="NCEA" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+          <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+          <Column Name="Name" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="TIN" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="LegalAddress" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="PostalAddress" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="Phones" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="Email" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="Homepage" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="Note" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="LastName" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="FirstName" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="MiddleName" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="DateOfBirth" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.DateTime]]"/>
+          <Column Name="Sex" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+          <Column Name="INILA" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="ShortName" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <SungeroEntityDataSource Name="eccc75cc7e6a95b124217c47a2b12cf3" Restrictions="DontModify, DontEdit, HideAllProperties" Alias="ExchangeBoxes" ReferenceName="ExchangeBoxes" DataType="Sungero.Domain.Shared.IChildEntityCollection`1[[Sungero.Parties.IPersonExchangeBoxes, Sungero.Domain.Interfaces]], Sungero.Domain.Shared" PropName="ExchangeBoxes" Enabled="true" EntityTypeId="1c0f1303-3d8f-4376-ae69-4ff22c457eb2">
+            <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+            <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+            <Column Name="OrganizationId" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="InvitationText" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="IsDefault" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="CounterpartyBox" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="IsRoaming" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="FtsId" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Box" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.ExchangeCore.IBusinessUnitBox, Sungero.Domain.Interfaces"/>
+            <Column Name="Counterparty" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Parties.IPerson, Sungero.Domain.Interfaces"/>
+          </SungeroEntityDataSource>
+          <Column Name="Responsible" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IEmployee, Sungero.Domain.Interfaces">
+            <Column Name="IsSystem" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="Sid" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="PersonalPhotoHash" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+            <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+            <Column Name="Name" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Description" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Phone" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Note" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Email" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="NeedNotifyExpiredAssignments" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="NeedNotifyNewAssignments" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="PersonnelNumber" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="NeedNotifyAssignmentsSummary" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="PersonalPhoto" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Byte[]" BindableControl="Picture"/>
+            <Column Name="Login" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.CoreEntities.ILogin, Sungero.Domain.Shared"/>
+            <Column Name="Person" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Parties.IPerson, Sungero.Domain.Interfaces"/>
+            <Column Name="Department" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IDepartment, Sungero.Domain.Interfaces"/>
+            <Column Name="JobTitle" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IJobTitle, Sungero.Domain.Interfaces"/>
+          </Column>
+          <Column Name="Bank" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Parties.IBank, Sungero.Domain.Interfaces">
+            <Column Name="CanExchange" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="Code" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="LegalAddress" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="PostalAddress" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Phones" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Email" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Homepage" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Note" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+            <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+            <Column Name="Name" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="TRRC" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="IsCardReadOnly" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="LegalName" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="TIN" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Nonresident" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="PSRN" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="NCEO" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="NCEA" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Account" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="BIC" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="CorrespondentAccount" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="IsSystem" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="SWIFT" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <SungeroEntityDataSource Name="e5e626487726e6680004d1766682252c" Restrictions="DontModify, DontEdit, HideAllProperties" Alias="ExchangeBoxes" ReferenceName="ExchangeBoxes" DataType="Sungero.Domain.Shared.IChildEntityCollection`1[[Sungero.Parties.IBankExchangeBoxes, Sungero.Domain.Interfaces]], Sungero.Domain.Shared" PropName="ExchangeBoxes" Enabled="true" EntityTypeId="b28d2948-f8b6-47e1-bdf0-a6f6be05e64c"/>
+            <Column Name="Region" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Commons.IRegion, Sungero.Domain.Interfaces"/>
+            <Column Name="City" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Commons.ICity, Sungero.Domain.Interfaces"/>
+            <Column Name="Responsible" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IEmployee, Sungero.Domain.Interfaces"/>
+            <Column Name="Bank" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Parties.IBank, Sungero.Domain.Interfaces"/>
+            <Column Name="HeadCompany" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Parties.ICompany, Sungero.Domain.Interfaces"/>
+          </Column>
+          <Column Name="City" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Commons.ICity, Sungero.Domain.Interfaces">
+            <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+            <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+            <Column Name="Name" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Region" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Commons.IRegion, Sungero.Domain.Interfaces"/>
+            <Column Name="Country" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Commons.ICountry, Sungero.Domain.Interfaces"/>
+          </Column>
+          <Column Name="Region" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Commons.IRegion, Sungero.Domain.Interfaces">
+            <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+            <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+            <Column Name="Name" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Code" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Country" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Commons.ICountry, Sungero.Domain.Interfaces"/>
+          </Column>
+        </Column>
+        <Column Name="Department" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IDepartment, Sungero.Domain.Interfaces">
+          <Column Name="IsSystem" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+          <Column Name="Sid" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+          <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+          <Column Name="Name" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="Description" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="Phone" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="ShortName" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="Note" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="Code" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <SungeroEntityDataSource Name="38a214b4776c50cb5947e53595233038" Restrictions="DontModify, DontEdit, HideAllProperties" Alias="RecipientLinks" ReferenceName="RecipientLinks" DataType="Sungero.Domain.Shared.IChildEntityCollection`1[[Sungero.Company.IDepartmentRecipientLinks, Sungero.Domain.Interfaces]], Sungero.Domain.Shared" PropName="RecipientLinks" Enabled="true" EntityTypeId="a9e935d5-3b72-4e3a-9e43-711d8f32b84e">
+            <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+            <Column Name="Sid" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Member" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IEmployee, Sungero.Domain.Interfaces"/>
+            <Column Name="Group" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IDepartment, Sungero.Domain.Interfaces"/>
+          </SungeroEntityDataSource>
+          <Column Name="Parent" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.CoreEntities.IGroup, Sungero.Domain.Shared">
+            <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+            <Column Name="Description" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="IsSystem" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="Sid" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Name" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+            <SungeroEntityDataSource Name="0d769559986298aee3d7c973133a9d96" Restrictions="DontModify, DontEdit, HideAllProperties" Alias="RecipientLinks" ReferenceName="RecipientLinks" DataType="Sungero.Domain.Shared.IChildEntityCollection`1[[Sungero.CoreEntities.IGroupRecipientLinks, Sungero.Domain.Shared]], Sungero.Domain.Shared" PropName="RecipientLinks" Enabled="true" EntityTypeId="20784da1-10a0-4ce1-97de-8a075142c47a"/>
+            <Column Name="Parent" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.CoreEntities.IGroup, Sungero.Domain.Shared"/>
+          </Column>
+          <Column Name="Manager" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IEmployee, Sungero.Domain.Interfaces">
+            <Column Name="IsSystem" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="Sid" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="PersonalPhotoHash" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+            <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+            <Column Name="Name" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Description" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Phone" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Note" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Email" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="NeedNotifyExpiredAssignments" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="NeedNotifyNewAssignments" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="PersonnelNumber" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="NeedNotifyAssignmentsSummary" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="PersonalPhoto" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Byte[]" BindableControl="Picture"/>
+            <Column Name="Login" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.CoreEntities.ILogin, Sungero.Domain.Shared"/>
+            <Column Name="Person" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Parties.IPerson, Sungero.Domain.Interfaces"/>
+            <Column Name="Department" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IDepartment, Sungero.Domain.Interfaces"/>
+            <Column Name="JobTitle" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IJobTitle, Sungero.Domain.Interfaces"/>
+          </Column>
+          <Column Name="HeadOffice" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IDepartment, Sungero.Domain.Interfaces">
+            <Column Name="IsSystem" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="Sid" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+            <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+            <Column Name="Name" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Description" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Phone" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="ShortName" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Note" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Code" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <SungeroEntityDataSource Name="235bda59f7d87e68d8a9ba2526838316" Restrictions="DontModify, DontEdit, HideAllProperties" Alias="RecipientLinks" ReferenceName="RecipientLinks" DataType="Sungero.Domain.Shared.IChildEntityCollection`1[[Sungero.Company.IDepartmentRecipientLinks, Sungero.Domain.Interfaces]], Sungero.Domain.Shared" PropName="RecipientLinks" Enabled="true" EntityTypeId="a9e935d5-3b72-4e3a-9e43-711d8f32b84e"/>
+            <Column Name="Parent" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.CoreEntities.IGroup, Sungero.Domain.Shared"/>
+            <Column Name="Manager" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IEmployee, Sungero.Domain.Interfaces"/>
+            <Column Name="HeadOffice" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IDepartment, Sungero.Domain.Interfaces"/>
+            <Column Name="BusinessUnit" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IBusinessUnit, Sungero.Domain.Interfaces"/>
+          </Column>
+          <Column Name="BusinessUnit" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IBusinessUnit, Sungero.Domain.Interfaces">
+            <Column Name="Description" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="IsSystem" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="Sid" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+            <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+            <Column Name="Name" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="TIN" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="TRRC" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Phones" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="LegalName" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="LegalAddress" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="PostalAddress" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Note" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Email" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Homepage" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="PSRN" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="NCEO" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="NCEA" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Account" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Code" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Nonresident" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <SungeroEntityDataSource Name="2be80d360f0a08c6bd4219909e742a1e" Restrictions="DontModify, DontEdit, HideAllProperties" Alias="RecipientLinks" ReferenceName="RecipientLinks" DataType="Sungero.Domain.Shared.IChildEntityCollection`1[[Sungero.Company.IBusinessUnitRecipientLinks, Sungero.Domain.Interfaces]], Sungero.Domain.Shared" PropName="RecipientLinks" Enabled="true" EntityTypeId="2e3f162d-ef11-4ebc-84ef-c39069e5e94e"/>
+            <Column Name="Parent" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.CoreEntities.IGroup, Sungero.Domain.Shared"/>
+            <Column Name="City" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Commons.ICity, Sungero.Domain.Interfaces"/>
+            <Column Name="Region" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Commons.IRegion, Sungero.Domain.Interfaces"/>
+            <Column Name="HeadCompany" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IBusinessUnit, Sungero.Domain.Interfaces"/>
+            <Column Name="Company" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Parties.ICompany, Sungero.Domain.Interfaces"/>
+            <Column Name="CEO" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IEmployee, Sungero.Domain.Interfaces"/>
+            <Column Name="Bank" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Parties.IBank, Sungero.Domain.Interfaces"/>
+          </Column>
+        </Column>
+        <Column Name="JobTitle" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IJobTitle, Sungero.Domain.Interfaces">
+          <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+          <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+          <Column Name="Name" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="Department" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IDepartment, Sungero.Domain.Interfaces">
+            <Column Name="IsSystem" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="Sid" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+            <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+            <Column Name="Name" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Description" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Phone" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="ShortName" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Note" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Code" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <SungeroEntityDataSource Name="df94222f5dedb32856c01b948904bf68" Restrictions="DontModify, DontEdit, HideAllProperties" Alias="RecipientLinks" ReferenceName="RecipientLinks" DataType="Sungero.Domain.Shared.IChildEntityCollection`1[[Sungero.Company.IDepartmentRecipientLinks, Sungero.Domain.Interfaces]], Sungero.Domain.Shared" PropName="RecipientLinks" Enabled="true" EntityTypeId="a9e935d5-3b72-4e3a-9e43-711d8f32b84e"/>
+            <Column Name="Parent" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.CoreEntities.IGroup, Sungero.Domain.Shared"/>
+            <Column Name="Manager" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IEmployee, Sungero.Domain.Interfaces"/>
+            <Column Name="HeadOffice" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IDepartment, Sungero.Domain.Interfaces"/>
+            <Column Name="BusinessUnit" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IBusinessUnit, Sungero.Domain.Interfaces"/>
+          </Column>
+        </Column>
+        <Column Name="MangerDirRX" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="DirRX.IntegrationRubi.IEmployee, Sungero.Domain.Interfaces">
+          <Column Name="IsSystem" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+          <Column Name="Sid" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="PersonalPhotoHash" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+          <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+          <Column Name="Name" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="Description" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="Phone" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="Note" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="Email" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="NeedNotifyExpiredAssignments" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+          <Column Name="NeedNotifyNewAssignments" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+          <Column Name="PersonnelNumber" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="NeedNotifyAssignmentsSummary" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+          <Column Name="WWIDDirRX" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+          <Column Name="EndDateDirRX" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.DateTime]]"/>
+          <Column Name="StartDateDirRX" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.DateTime]]"/>
+          <Column Name="PersonalPhoto" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Byte[]" BindableControl="Picture"/>
+          <Column Name="Login" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.CoreEntities.ILogin, Sungero.Domain.Shared">
+            <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+            <Column Name="LoginName" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+            <Column Name="PasswordLastChangeDate" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.DateTime]]"/>
+            <Column Name="LockoutEndDate" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.DateTime]]"/>
+            <Column Name="TypeAuthentication" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+            <Column Name="NeedChangePassword" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+          </Column>
+          <Column Name="Person" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Parties.IPerson, Sungero.Domain.Interfaces">
+            <Column Name="CanExchange" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="Code" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Nonresident" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="Account" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="PSRN" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="NCEO" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="NCEA" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+            <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+            <Column Name="Name" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="TIN" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="LegalAddress" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="PostalAddress" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Phones" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Email" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Homepage" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Note" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="LastName" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="FirstName" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="MiddleName" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="DateOfBirth" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.DateTime]]"/>
+            <Column Name="Sex" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+            <Column Name="INILA" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="ShortName" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <SungeroEntityDataSource Name="060e62f542757ca24211ad493fd5994c" Restrictions="DontModify, DontEdit, HideAllProperties" Alias="ExchangeBoxes" ReferenceName="ExchangeBoxes" DataType="Sungero.Domain.Shared.IChildEntityCollection`1[[Sungero.Parties.IPersonExchangeBoxes, Sungero.Domain.Interfaces]], Sungero.Domain.Shared" PropName="ExchangeBoxes" Enabled="true" EntityTypeId="1c0f1303-3d8f-4376-ae69-4ff22c457eb2"/>
+            <Column Name="Responsible" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IEmployee, Sungero.Domain.Interfaces"/>
+            <Column Name="Bank" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Parties.IBank, Sungero.Domain.Interfaces"/>
+            <Column Name="City" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Commons.ICity, Sungero.Domain.Interfaces"/>
+            <Column Name="Region" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Commons.IRegion, Sungero.Domain.Interfaces"/>
+          </Column>
+          <Column Name="Department" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IDepartment, Sungero.Domain.Interfaces">
+            <Column Name="IsSystem" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="Sid" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+            <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+            <Column Name="Name" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Description" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Phone" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="ShortName" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Note" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Code" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <SungeroEntityDataSource Name="d00676de991a031b917efa45c9410d9e" Restrictions="DontModify, DontEdit, HideAllProperties" Alias="RecipientLinks" ReferenceName="RecipientLinks" DataType="Sungero.Domain.Shared.IChildEntityCollection`1[[Sungero.Company.IDepartmentRecipientLinks, Sungero.Domain.Interfaces]], Sungero.Domain.Shared" PropName="RecipientLinks" Enabled="true" EntityTypeId="a9e935d5-3b72-4e3a-9e43-711d8f32b84e"/>
+            <Column Name="Parent" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.CoreEntities.IGroup, Sungero.Domain.Shared"/>
+            <Column Name="Manager" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IEmployee, Sungero.Domain.Interfaces"/>
+            <Column Name="HeadOffice" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IDepartment, Sungero.Domain.Interfaces"/>
+            <Column Name="BusinessUnit" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IBusinessUnit, Sungero.Domain.Interfaces"/>
+          </Column>
+          <Column Name="JobTitle" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IJobTitle, Sungero.Domain.Interfaces">
+            <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+            <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+            <Column Name="Name" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Department" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IDepartment, Sungero.Domain.Interfaces"/>
+          </Column>
+          <Column Name="MangerDirRX" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="DirRX.IntegrationRubi.IEmployee, Sungero.Domain.Interfaces">
+            <Column Name="IsSystem" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="Sid" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="PersonalPhotoHash" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Id" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Int32]]"/>
+            <Column Name="Status" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[Sungero.Core.Enumeration, Sungero.Domain.Shared]]"/>
+            <Column Name="Name" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Description" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Phone" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Note" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="Email" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="NeedNotifyExpiredAssignments" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="NeedNotifyNewAssignments" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="PersonnelNumber" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="NeedNotifyAssignmentsSummary" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.Boolean]]"/>
+            <Column Name="WWIDDirRX" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.String"/>
+            <Column Name="EndDateDirRX" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.DateTime]]"/>
+            <Column Name="StartDateDirRX" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Nullable`1[[System.DateTime]]"/>
+            <Column Name="PersonalPhoto" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="System.Byte[]" BindableControl="Picture"/>
+            <Column Name="Login" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.CoreEntities.ILogin, Sungero.Domain.Shared"/>
+            <Column Name="Person" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Parties.IPerson, Sungero.Domain.Interfaces"/>
+            <Column Name="Department" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IDepartment, Sungero.Domain.Interfaces"/>
+            <Column Name="JobTitle" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="Sungero.Company.IJobTitle, Sungero.Domain.Interfaces"/>
+            <Column Name="MangerDirRX" Restrictions="DontModify, DontEdit, HideAllProperties" DataType="DirRX.IntegrationRubi.IEmployee, Sungero.Domain.Interfaces"/>
+          </Column>
+        </Column>
+      </Column>
+    </SungeroEntityDataSource>
+    <SungeroParameter Name="SungeroConnectionString" Restrictions="DontModify, DontEdit, DontDelete, HideAllProperties, DontShow" Id="fc615327-89ba-4537-b7e1-d3c989e60479" IsRequired="false" IsCollection="false" InternalDataType="System.String" IsSimpleDataType="false" EntityTypeId="00000000-0000-0000-0000-000000000000"/>
+    <SungeroParameter Name="StartDate" Id="d288de56-f94a-489f-863f-f1e61f8acfdb" IsRequired="false" IsCollection="false" InternalDataType="System.DateTime" IsSimpleDataType="true" EntityTypeId="00000000-0000-0000-0000-000000000000"/>
+    <SungeroParameter Name="EndDate" Id="d6861427-bb9d-4a7c-8e21-f4f94a2f7bc2" IsRequired="false" IsCollection="false" InternalDataType="System.DateTime" IsSimpleDataType="true" EntityTypeId="00000000-0000-0000-0000-000000000000"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Watermark.Font="Arial, 60pt">
+    <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="37.8">
+      <TextObject Name="Text1" Width="396.9" Height="28.35" Text="Срез по сотрудникам, работающих c [StartDate] по [EndDate]" Font="Arial, 10pt"/>
+    </ReportTitleBand>
+    <DataBand Name="Data1" Top="83.6" Width="718.2" Height="75.6" DataSource="Employees">
+      <TextObject Name="Text2" Left="189" Width="94.5" Height="18.9" Text="[Employees.Person.MiddleName]" Font="Arial, 10pt"/>
+      <TextObject Name="Text4" Left="94.5" Width="94.5" Height="18.9" Text="[Employees.Person.FirstName]" Font="Arial, 10pt"/>
+      <TextObject Name="Text6" Width="94.5" Height="18.9" Text="[Employees.Person.LastName]" Font="Arial, 10pt"/>
+      <TextObject Name="Text8" Left="283.5" Width="94.5" Height="18.9" Text="[Employees.Department.Name]" Font="Arial, 10pt"/>
+      <TextObject Name="Text10" Left="378" Width="94.5" Height="18.9" Text="[Employees.JobTitle.Name]" Font="Arial, 10pt"/>
+      <TextObject Name="Text12" Left="472.5" Width="94.5" Height="18.9" Text="[Employees.Status]" Font="Arial, 10pt"/>
+      <TextObject Name="Text14" Left="567" Width="94.5" Height="18.9" Text="[Employees.StartDateDirRX]" Format="Date" Format.Format="d" Font="Arial, 10pt"/>
+      <TextObject Name="Text16" Left="661.5" Width="94.5" Height="18.9" Text="[Employees.EndDateDirRX]" Format="Date" Format.Format="d" Font="Arial, 10pt"/>
+      <DataHeaderBand Name="DataHeader1" Top="41.8" Width="718.2" Height="37.8">
+        <TextObject Name="Text3" Width="94.5" Height="18.9" Text="Фамилия" Font="Arial, 10pt"/>
+        <TextObject Name="Text5" Left="94.5" Width="94.5" Height="18.9" Text="Имя" Font="Arial, 10pt"/>
+        <TextObject Name="Text7" Left="189" Width="94.5" Height="18.9" Text="Отчество" Font="Arial, 10pt"/>
+        <TextObject Name="Text9" Left="283.5" Width="94.5" Height="18.9" Text="Подразделение" Font="Arial, 10pt"/>
+        <TextObject Name="Text11" Left="378" Width="94.5" Height="18.9" Text="Должность" Font="Arial, 10pt"/>
+        <TextObject Name="Text13" Left="472.5" Width="94.5" Height="18.9" Text="Состояние" Font="Arial, 10pt"/>
+        <TextObject Name="Text15" Left="567" Width="94.5" Height="18.9" Text="Дата приёма" Font="Arial, 10pt"/>
+        <TextObject Name="Text17" Left="661.5" Width="94.5" Height="18.9" Text="Дата увольнения" Font="Arial, 10pt"/>
+      </DataHeaderBand>
+    </DataBand>
+  </ReportPage>
+</Report>

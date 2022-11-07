@@ -58,32 +58,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Description" xml:space="preserve">
+    <value />
+  </data>
   <data name="DisplayName" xml:space="preserve">
-    <value>StudyIntegration</value>
-  </data>
-  <data name="CoverTitle" xml:space="preserve">
-    <value>StudyIntegration</value>
-  </data>
-  <data name="JobDisplayName_c68bc06f7b524a1991f95fa2514d357c" xml:space="preserve">
-    <value>Get employees from csv file</value>
-  </data>
-  <data name="JobDescription_c68bc06f7b524a1991f95fa2514d357c" xml:space="preserve">
-    <value>Obtaining data on the functioning of the Rubi system through a csv file.</value>
-  </data>
-  <data name="CoverDescription" xml:space="preserve">
-    <value>
-The module is designed to teach development.</value>
-  </data>
-  <data name="CoverTab_Reports" xml:space="preserve">
-    <value>Reports</value>
-  </data>
-  <data name="CoverGroup_Reports" xml:space="preserve">
-    <value>Reports</value>
-  </data>
-  <data name="CoverAction_GetEmployeesReport" xml:space="preserve">
-    <value>GetEmployeesReport</value>
-  </data>
-  <data name="CoverDescription_GetEmployeesReport" xml:space="preserve">
-    <value>List of employees who worked for a certain period of time.</value>
+    <value>EmployeesReport</value>
   </data>
 </root>

@@ -64,4 +64,25 @@
   <data name="JobDescription_c68bc06f7b524a1991f95fa2514d357c" xml:space="preserve">
     <value>Получение данных о сотрудниках из системы Rubi через csv файл.</value>
   </data>
+  <data name="CoverTitle" xml:space="preserve">
+    <value>Интеграция с Rubi</value>
+  </data>
+  <data name="CoverDescription" xml:space="preserve">
+    <value>Модуль предназначен для обучения разработке.</value>
+  </data>
+  <data name="CoverTab_Reports" xml:space="preserve">
+    <value>Отчёты</value>
+  </data>
+  <data name="CoverGroup_Reports" xml:space="preserve">
+    <value>Отчёты</value>
+  </data>
+  <data name="CoverAction_GetEmployeesReport" xml:space="preserve">
+    <value>Срез по сотрудникам за период</value>
+  </data>
+  <data name="CoverDescription_GetEmployeesReport" xml:space="preserve">
+    <value>Список сотрудников, работавших за определенный период времени.</value>
+  </data>
+  <data name="DisplayName" xml:space="preserve">
+    <value>Обучение разработке (интеграция)</value>
+  </data>
 </root>
