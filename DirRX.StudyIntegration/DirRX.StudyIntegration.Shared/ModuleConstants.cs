@@ -7,6 +7,11 @@ namespace DirRX.StudyIntegration.Constants
   {
 
     /// <summary>
+    /// Формат даты в csv файле.
+    /// </summary>
+    public const string DateTimeParseFormat = "dd.MM.yyyy";
+
+    /// <summary>
     /// Символ разделителя в csv файле.
     /// </summary>
     public const char RubiCsvSplitSymbol = ';';
