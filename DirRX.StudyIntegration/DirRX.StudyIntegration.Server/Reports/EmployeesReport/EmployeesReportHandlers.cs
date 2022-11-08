@@ -17,8 +17,8 @@ namespace DirRX.StudyIntegration
     {
       return DirRX.IntegrationRubi.Employees.GetAll()
         .Where(e => e.StartDateDirRX >= EmployeesReport.StartDate)
-        .Where(e => EmployeesReport.EndDate.HasValue ? 
-          e.EndDateDirRX <= EmployeesReport.EndDate : e.EndDateDirRX.Equals((DateTime?)null));
+        .Where(e => EmployeesReport.EndDate.HasValue ?
+               e.EndDateDirRX <= EmployeesReport.EndDate : e.EndDateDirRX.Equals(null));
     }
 
   }

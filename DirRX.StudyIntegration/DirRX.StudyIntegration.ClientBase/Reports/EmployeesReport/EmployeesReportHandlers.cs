@@ -18,7 +18,7 @@ namespace DirRX.StudyIntegration
                 
       if (dialog.Show() != DialogButtons.Ok)
         e.Cancel = true;
-      
+   
       EmployeesReport.StartDate = startDate.Value.Value;
       
       if (endDate.Value != null)
