@@ -11,136 +11,151 @@ namespace DirRX.IntegrationRubi
   partial class EmployeeServerHandlers
   {
 
-    public override void BeforeDelete(Sungero.Domain.BeforeDeleteEventArgs e)
-    {
-      // Если у сотрудника нет подразделения, не удалять ссылку на него в подразделении(не вызываем базовое событие до удаления).
-      if (_obj.Department != null)
-        base.BeforeDelete(e);
-    }
-
     public override void BeforeSaveHistory(Sungero.Domain.HistoryEventArgs e)
-    {     
+    {
       var IsEmployeeCreated = e.Action == Sungero.CoreEntities.History.Action.Create;
       var IsEmployeeUpdated = e.Action == Sungero.CoreEntities.History.Action.Update;
-      
-      // Сотрудник создан.
-      if (IsEmployeeCreated)
+
+      if (IsEmployeeCreated || IsEmployeeUpdated)
       {
-        var createOperation = new Enumeration(Constants.Company.Employee.Created);
-        var createOperationDetails = createOperation;
+        var commentsList = new List<string>();
         
-        var comment = DirRX.IntegrationRubi.Employees.Resources.CreateHistoryCommentFormat(_obj.Person.LastName,
-          _obj.Person.FirstName, _obj.Person.MiddleName);
-        
-        e.Write(createOperation, createOperationDetails, comment);
-      }
-      
-      // Сотрудник обновлнён.
-      if (IsEmployeeUpdated)
-      {
-        var updateOperation = new Enumeration(Constants.Company.Employee.Updated);
-        var updateOperationDetails = updateOperation;
-        var sb = new StringBuilder().AppendLine(DirRX.IntegrationRubi.Employees.Resources.UpdateHistoryComment);
-        
-        // Изменилось Id сотрудника.
+        // Изменилось WWID сотрудника.
         if (_obj.State.Properties.WWIDDirRX.IsChanged)
         {
-          sb.AppendLine(DirRX.IntegrationRubi.Employees.Resources.PropertyIsChangedCommentFormat(
+          commentsList.Add(DirRX.IntegrationRubi.Employees.Resources.PropertyIsChangedCommentFormat(
             Employees.Info.Properties.WWIDDirRX.LocalizedName, _obj.WWIDDirRX));
         }
         
         // Изменился логин сотрудника.
-        if (_obj.Login.State.Properties.LoginName.IsChanged)
+        if (_obj.State.Properties.Login.IsChanged)
         {
-          sb.AppendLine(DirRX.IntegrationRubi.Employees.Resources.PropertyIsChangedCommentFormat(
-            Employees.Info.Properties.Login.ReferencedEntityInfo.Properties.LoginName.LocalizedName,
-            _obj.Login.LoginName));
+          commentsList.Add(DirRX.IntegrationRubi.Employees.Resources.EntityIsChangedCommentFormat(
+            Employees.Info.Properties.Login.LocalizedName,
+            _obj.Login.LoginName,
+            _obj.Login.Id));
         }
         
         // Изменилась почта сотрудника.
         if (_obj.State.Properties.Email.IsChanged)
         {
-          sb.AppendLine(DirRX.IntegrationRubi.Employees.Resources.PropertyIsChangedCommentFormat(
-            Employees.Info.Properties.Email.LocalizedName, _obj.Email));
+          if (_obj.Email == null)
+          {
+            commentsList.Add(DirRX.IntegrationRubi.Employees.Resources.PropertyIsClearedFormat(
+              Employees.Info.Properties.Email.LocalizedName));
+          }
+          else
+          {
+            commentsList.Add(DirRX.IntegrationRubi.Employees.Resources.PropertyIsChangedCommentFormat(
+              Employees.Info.Properties.Email.LocalizedName, _obj.Email));
+          }
         }
         
         // Изменилось состояние сотрудника.
         if (_obj.State.Properties.Status.IsChanged)
         {
-          sb.AppendLine(DirRX.IntegrationRubi.Employees.Resources.PropertyIsChangedCommentFormat(
-            Employees.Info.Properties.Status.LocalizedName, 
+          commentsList.Add(DirRX.IntegrationRubi.Employees.Resources.PropertyIsChangedCommentFormat(
+            Employees.Info.Properties.Status.LocalizedName,
             Employees.Info.Properties.Status.GetLocalizedValue(_obj.Status)));
         }
         
         // Изменилась дата приёма сотрудника.
         if (_obj.State.Properties.StartDateDirRX.IsChanged)
         {
-          sb.AppendLine(DirRX.IntegrationRubi.Employees.Resources.PropertyIsChangedCommentFormat(
+          commentsList.Add(DirRX.IntegrationRubi.Employees.Resources.PropertyIsChangedCommentFormat(
             Employees.Info.Properties.StartDateDirRX.LocalizedName, _obj.StartDateDirRX));
         }
         
         // Изменилась дата увольнения сотрудника.
         if (_obj.State.Properties.EndDateDirRX.IsChanged)
         {
-          sb.AppendLine(DirRX.IntegrationRubi.Employees.Resources.PropertyIsChangedCommentFormat(
-            Employees.Info.Properties.EndDateDirRX.LocalizedName, _obj.EndDateDirRX));
+          if (_obj.EndDateDirRX == null)
+          {
+            commentsList.Add(DirRX.IntegrationRubi.Employees.Resources.PropertyIsClearedFormat(
+              Employees.Info.Properties.EndDateDirRX.LocalizedName));
+          }
+          else
+          {
+            commentsList.Add(DirRX.IntegrationRubi.Employees.Resources.PropertyIsChangedCommentFormat(
+              Employees.Info.Properties.EndDateDirRX.LocalizedName, _obj.EndDateDirRX));
+          }
         }
         
-        // Изменилось имя сотрудника.
-        if (_obj.Person.State.Properties.LastName.IsChanged)
+        // Изменилось ФИО.
+        if (_obj.State.Properties.Person.IsChanged)
         {
-          sb.AppendLine(DirRX.IntegrationRubi.Employees.Resources.PropertyIsChangedCommentFormat(
-            Employees.Info.Properties.Person.ReferencedEntityInfo.Properties.LastName.LocalizedName,
-            _obj.Person.LastName));
-        }
-        
-        // Изменилась фамилия сотрудника.
-        if (_obj.Person.State.Properties.FirstName.IsChanged)
-        {
-          sb.AppendLine(DirRX.IntegrationRubi.Employees.Resources.PropertyIsChangedCommentFormat(
-            Employees.Info.Properties.Person.ReferencedEntityInfo.Properties.FirstName.LocalizedName,
-            _obj.Person.FirstName));
-        }
-        
-        // Изменилось отчество сотрудника.
-        if (_obj.Person.State.Properties.MiddleName.IsChanged)
-        {
-          sb.AppendLine(DirRX.IntegrationRubi.Employees.Resources.PropertyIsChangedCommentFormat(
-            Employees.Info.Properties.Person.ReferencedEntityInfo.Properties.MiddleName.LocalizedName,
-            _obj.Person.MiddleName));
+          commentsList.Add(DirRX.IntegrationRubi.Employees.Resources.PersonIsChangedFormat(
+            _obj.Person.LastName, _obj.Person.FirstName, _obj.Person.MiddleName, _obj.Person.Id));
         }
         
         // Изменилось подразделение сотрудника.
-        if (_obj.Department != null && _obj.Department.State.IsChanged)
+        if (_obj.State.Properties.Department.IsChanged)
         {
-          sb.AppendLine(DirRX.IntegrationRubi.Employees.Resources.PropertyIsChangedCommentFormat(
-            Employees.Info.Properties.Department.LocalizedName,
-            _obj.Department.Name));
+          if (_obj.Department == null)
+          {
+            commentsList.Add(DirRX.IntegrationRubi.Employees.Resources.PropertyIsClearedFormat(
+              Employees.Info.Properties.Department.LocalizedName));
+          }
+          else
+          {
+            commentsList.Add(DirRX.IntegrationRubi.Employees.Resources.EntityIsChangedCommentFormat(
+              Employees.Info.Properties.Department.LocalizedName,
+              _obj.Department.Name,
+              _obj.Department.Id));
+          }
         }
         
         // Изменилась должность сотрудника.
-        if (_obj.JobTitle != null && _obj.JobTitle.State.IsChanged)
+        if (_obj.State.Properties.JobTitle.IsChanged)
         {
-          sb.AppendLine(DirRX.IntegrationRubi.Employees.Resources.PropertyIsChangedCommentFormat(
-            Employees.Info.Properties.JobTitle.LocalizedName,
-            _obj.JobTitle.Name));
+          if (_obj.JobTitle == null)
+          {
+            commentsList.Add(DirRX.IntegrationRubi.Employees.Resources.PropertyIsClearedFormat(
+              Employees.Info.Properties.JobTitle.LocalizedName));
+          }
+          else
+          {
+            commentsList.Add(DirRX.IntegrationRubi.Employees.Resources.EntityIsChangedCommentFormat(
+              Employees.Info.Properties.JobTitle.LocalizedName,
+              _obj.JobTitle.Name,
+              _obj.JobTitle.Id));
+          }
         }
         
         // Изменился руководитель сотрудника.
-        if (_obj.MangerDirRX != null && _obj.MangerDirRX.State.IsChanged)
-        {         
-          sb.AppendLine(DirRX.IntegrationRubi.Employees.Resources.PropertyIsChangedCommentFormat(
-            Employees.Info.Properties.MangerDirRX.LocalizedName,
-            string.Format("{0} {1} {2}",
+        if (_obj.State.Properties.MangerDirRX.IsChanged)
+        {
+          if (_obj.MangerDirRX == null)
+          {
+            commentsList.Add(DirRX.IntegrationRubi.Employees.Resources.PropertyIsClearedFormat(
+              Employees.Info.Properties.MangerDirRX.LocalizedName));
+          }
+          else
+          {
+            commentsList.Add(DirRX.IntegrationRubi.Employees.Resources.ManagerIsChangedFormat(
               _obj.MangerDirRX.Person.LastName,
               _obj.MangerDirRX.Person.FirstName,
-              _obj.MangerDirRX.Person.MiddleName)));
+              _obj.MangerDirRX.Person.MiddleName,
+              _obj.MangerDirRX.Person.Id));
+          }
         }
         
-        var comment = sb.ToString();
-        e.Write(updateOperation, updateOperationDetails, comment);
+        var comment = string.Join(" ", commentsList);
+        
+        if (IsEmployeeCreated)
+        {
+          var createOperation = new Enumeration(Constants.Company.Employee.Created);
+          var createOperationDetails = createOperation;
+          e.Write(createOperation, createOperationDetails, comment);
+        }
+        
+        if (IsEmployeeUpdated)
+        {
+          var updateOperation = new Enumeration(Constants.Company.Employee.Updated);
+          var updateOperationDetails = updateOperation;
+          e.Write(updateOperation, updateOperationDetails, comment);
+        }
       }
     }
   }
-
 }

@@ -58,13 +58,25 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="CreateHistoryComment" xml:space="preserve">
-    <value>Employee is created: {0} {1} {2}.</value>
+  <data name="PersonIsChanged" xml:space="preserve">
+    <value>Full name - {0} {1} {2} (Id = {3}).</value>
   </data>
-  <data name="UpdateHistoryComment" xml:space="preserve">
-    <value>Employee is updated:</value>
+  <data name="ManagerIsChanged" xml:space="preserve">
+    <value>Manager - {0} {1} {2} (Id = {3}).</value>
   </data>
   <data name="PropertyIsChangedComment" xml:space="preserve">
     <value> {0} - {1}.</value>
+  </data>
+  <data name="Enum_Operation_Created" xml:space="preserve">
+    <value>Creation</value>
+  </data>
+  <data name="Enum_Operation_Updated" xml:space="preserve">
+    <value>Updation</value>
+  </data>
+  <data name="EntityIsChangedComment" xml:space="preserve">
+    <value>{0} - {1} (Id = {2}).</value>
+  </data>
+  <data name="PropertyIsCleared" xml:space="preserve">
+    <value> {0} - cleared.</value>
   </data>
 </root>
