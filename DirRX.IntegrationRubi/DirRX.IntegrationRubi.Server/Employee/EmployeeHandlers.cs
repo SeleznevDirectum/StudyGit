@@ -21,7 +21,8 @@ namespace DirRX.IntegrationRubi
         var commentsList = new List<string>();
         
         // Изменилось WWID сотрудника.
-        if (_obj.State.Properties.WWIDDirRX.IsChanged)
+        if (_obj.State.Properties.WWIDDirRX.IsChanged &&
+            _obj.State.Properties.WWIDDirRX.PreviousValue != _obj.WWIDDirRX)
         {
           commentsList.Add(DirRX.IntegrationRubi.Employees.Resources.PropertyIsChangedCommentFormat(
             Employees.Info.Properties.WWIDDirRX.LocalizedName, _obj.WWIDDirRX));
@@ -30,14 +31,22 @@ namespace DirRX.IntegrationRubi
         // Изменился логин сотрудника.
         if (_obj.State.Properties.Login.IsChanged)
         {
-          commentsList.Add(DirRX.IntegrationRubi.Employees.Resources.EntityIsChangedCommentFormat(
-            Employees.Info.Properties.Login.LocalizedName,
-            _obj.Login.LoginName,
-            _obj.Login.Id));
+          if (_obj.Login == null)
+          {
+            commentsList.Add(DirRX.IntegrationRubi.Employees.Resources.PropertyIsClearedFormat(
+              Employees.Info.Properties.Login.LocalizedName));
+          }
+          else
+          {
+            commentsList.Add(DirRX.IntegrationRubi.Employees.Resources.EntityIsChangedCommentFormat(
+              Employees.Info.Properties.Login.LocalizedName,
+              _obj.Login.LoginName,
+              _obj.Login.Id));
+          }
         }
         
         // Изменилась почта сотрудника.
-        if (_obj.State.Properties.Email.IsChanged)
+        if (_obj.State.Properties.Email.IsChanged && _obj.State.Properties.Email.PreviousValue != _obj.Email)
         {
           if (_obj.Email == null)
           {
@@ -52,7 +61,7 @@ namespace DirRX.IntegrationRubi
         }
         
         // Изменилось состояние сотрудника.
-        if (_obj.State.Properties.Status.IsChanged)
+        if (_obj.State.Properties.Status.IsChanged && _obj.State.Properties.Status.PreviousValue != _obj.Status)
         {
           commentsList.Add(DirRX.IntegrationRubi.Employees.Resources.PropertyIsChangedCommentFormat(
             Employees.Info.Properties.Status.LocalizedName,
@@ -60,14 +69,16 @@ namespace DirRX.IntegrationRubi
         }
         
         // Изменилась дата приёма сотрудника.
-        if (_obj.State.Properties.StartDateDirRX.IsChanged)
+        if (_obj.State.Properties.StartDateDirRX.IsChanged &&
+            _obj.State.Properties.StartDateDirRX.PreviousValue != _obj.StartDateDirRX)
         {
           commentsList.Add(DirRX.IntegrationRubi.Employees.Resources.PropertyIsChangedCommentFormat(
             Employees.Info.Properties.StartDateDirRX.LocalizedName, _obj.StartDateDirRX));
         }
         
         // Изменилась дата увольнения сотрудника.
-        if (_obj.State.Properties.EndDateDirRX.IsChanged)
+        if (_obj.State.Properties.EndDateDirRX.IsChanged &&
+            _obj.State.Properties.EndDateDirRX.PreviousValue != _obj.EndDateDirRX)
         {
           if (_obj.EndDateDirRX == null)
           {
@@ -81,11 +92,44 @@ namespace DirRX.IntegrationRubi
           }
         }
         
+        // Изменился табельный номер сотрудника.
+        if (_obj.State.Properties.PersonnelNumber.IsChanged &&
+            _obj.State.Properties.PersonnelNumber.PreviousValue != _obj.PersonnelNumber)
+        {
+          if (_obj.PersonnelNumber == null)
+          {
+            commentsList.Add(DirRX.IntegrationRubi.Employees.Resources.PropertyIsClearedFormat(
+              Employees.Info.Properties.PersonnelNumber.LocalizedName));
+          }
+          else
+          {
+            commentsList.Add(DirRX.IntegrationRubi.Employees.Resources.PropertyIsChangedCommentFormat(
+              Employees.Info.Properties.PersonnelNumber.LocalizedName, _obj.PersonnelNumber));
+          }
+        }
+        
+        // Изменился рабочий телефон сотрудника.
+        if (_obj.State.Properties.Phone.IsChanged && _obj.State.Properties.Phone.PreviousValue != _obj.Phone)
+        {
+          if(_obj.Phone == null)
+          {
+            commentsList.Add(DirRX.IntegrationRubi.Employees.Resources.PropertyIsClearedFormat(
+              Employees.Info.Properties.Phone.LocalizedName));
+          }
+          else
+          {
+            commentsList.Add(DirRX.IntegrationRubi.Employees.Resources.PropertyIsChangedCommentFormat(
+              Employees.Info.Properties.Phone.LocalizedName, _obj.Phone));
+          }
+        }
+        
         // Изменилось ФИО.
         if (_obj.State.Properties.Person.IsChanged)
         {
-          commentsList.Add(DirRX.IntegrationRubi.Employees.Resources.PersonIsChangedFormat(
-            _obj.Person.LastName, _obj.Person.FirstName, _obj.Person.MiddleName, _obj.Person.Id));
+          {
+            commentsList.Add(DirRX.IntegrationRubi.Employees.Resources.PersonIsChangedFormat(
+              _obj.Person, _obj.Id));
+          }
         }
         
         // Изменилось подразделение сотрудника.
@@ -100,7 +144,7 @@ namespace DirRX.IntegrationRubi
           {
             commentsList.Add(DirRX.IntegrationRubi.Employees.Resources.EntityIsChangedCommentFormat(
               Employees.Info.Properties.Department.LocalizedName,
-              _obj.Department.Name,
+              _obj.Department,
               _obj.Department.Id));
           }
         }
@@ -117,7 +161,7 @@ namespace DirRX.IntegrationRubi
           {
             commentsList.Add(DirRX.IntegrationRubi.Employees.Resources.EntityIsChangedCommentFormat(
               Employees.Info.Properties.JobTitle.LocalizedName,
-              _obj.JobTitle.Name,
+              _obj.JobTitle,
               _obj.JobTitle.Id));
           }
         }
@@ -133,27 +177,21 @@ namespace DirRX.IntegrationRubi
           else
           {
             commentsList.Add(DirRX.IntegrationRubi.Employees.Resources.ManagerIsChangedFormat(
-              _obj.MangerDirRX.Person.LastName,
-              _obj.MangerDirRX.Person.FirstName,
-              _obj.MangerDirRX.Person.MiddleName,
+              _obj.MangerDirRX,
               _obj.MangerDirRX.Person.Id));
           }
         }
         
-        var comment = string.Join(" ", commentsList);
-        
-        if (IsEmployeeCreated)
+        if (commentsList.Any())
         {
-          var createOperation = new Enumeration(Constants.Company.Employee.Created);
-          var createOperationDetails = createOperation;
-          e.Write(createOperation, createOperationDetails, comment);
-        }
-        
-        if (IsEmployeeUpdated)
-        {
-          var updateOperation = new Enumeration(Constants.Company.Employee.Updated);
-          var updateOperationDetails = updateOperation;
-          e.Write(updateOperation, updateOperationDetails, comment);
+          var comment = string.Join(Environment.NewLine, commentsList);
+          
+          var operation = IsEmployeeCreated?
+            new Enumeration(Constants.Company.Employee.Created) :
+            new Enumeration(Constants.Company.Employee.Updated);
+          
+          var operationDetails = operation;
+          e.Write(operation, operationDetails, comment);
         }
       }
     }

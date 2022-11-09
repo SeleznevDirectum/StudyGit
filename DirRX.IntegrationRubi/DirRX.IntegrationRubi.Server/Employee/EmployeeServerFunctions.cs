@@ -10,13 +10,5 @@ namespace DirRX.IntegrationRubi.Server
   partial class EmployeeFunctions
   {
 
-    /// <summary>
-    /// 
-    /// </summary>       
-    public void Function()
-    {
-      
-    }
-
   }
 }
