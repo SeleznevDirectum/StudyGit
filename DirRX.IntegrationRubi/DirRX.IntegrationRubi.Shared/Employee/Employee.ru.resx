@@ -71,7 +71,7 @@
     <value>Создание</value>
   </data>
   <data name="Enum_Operation_Updated" xml:space="preserve">
-    <value>Изменение</value>
+    <value>Изменение свойств</value>
   </data>
   <data name="EntityIsChangedComment" xml:space="preserve">
     <value>{0} - {1} (Id = {2}).</value>
