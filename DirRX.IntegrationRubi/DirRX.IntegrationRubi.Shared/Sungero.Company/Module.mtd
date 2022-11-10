@@ -1,0 +1,69 @@
+{
+  "$type": "Sungero.Metadata.LayerModuleMetadata, Sungero.Metadata",
+  "NameGuid": "f5d2d419-aa5e-427f-b1ca-0bb578ab877f",
+  "Name": "Company",
+  "AssociatedGuid": "59e3b659-312d-4ec3-8c84-74246aa3a929",
+  "AsyncHandlers": [
+    {
+      "NameGuid": "dbbabb31-4c23-4551-8687-c153d2051620",
+      "Name": "UpdateEmployeeName",
+      "DelayPeriod": 15,
+      "DelayStrategy": "ExponentialDelayStrategy",
+      "IsAncestorMetadata": true,
+      "Parameters": [
+        {
+          "NameGuid": "3c07eb9e-b2e7-4961-afe8-cef592ab8e48",
+          "Name": "PersonId",
+          "ParameterType": "Integer"
+        }
+      ]
+    }
+  ],
+  "BaseGuid": "d534e107-a54d-48ec-85ff-bc44d731a82f",
+  "ClientBaseAssemblyName": "DirRX.IntegrationRubi.ClientBase",
+  "ClientBaseNamespace": "DirRX.IntegrationRubi.Module.Company.ClientBase",
+  "Code": "Company",
+  "CompanyCode": "Sungero",
+  "Cover": {
+    "NameGuid": "a52a7382-131e-4cb5-9a18-28898b8b1f49",
+    "Actions": [
+      {
+        "$type": "Sungero.Metadata.CoverReportActionMetadata, Sungero.Reporting.Shared",
+        "NameGuid": "159bdbbc-7218-4f37-8262-7f2475be865f",
+        "Name": "ShowEmployeeEntityReportDirRX",
+        "CoverActionPresenterTypeName": "Sungero.Reporting.Client.CoverReportActionPresenter, Sungero.Reporting.Client",
+        "GroupId": "81281d6c-7b93-42fa-bf28-103d0e3419e3",
+        "PreviousItemGuid": "98d80342-5bdb-4e88-9608-02ece218ea40",
+        "ReportId": "cf4d7625-71a7-4209-9095-082a4a072871"
+      }
+    ],
+    "Groups": [],
+    "IsAncestorMetadata": true,
+    "Overridden": [
+      "Actions"
+    ],
+    "Tabs": [],
+    "Versions": []
+  },
+  "ExplorerTreeOrder": [],
+  "IconResourcesKeys": [],
+  "Importance": "Medium",
+  "LayeredFromGuid": "d534e107-a54d-48ec-85ff-bc44d731a82f",
+  "PublicStructures": [],
+  "ResourceInterfaceAssemblyName": "Sungero.Domain.Interfaces",
+  "ResourceInterfaceNamespace": "DirRX.IntegrationRubi.Module.Company",
+  "ResourcesKeys": [],
+  "SpecialFolders": [],
+  "Version": "4.4.28.0",
+  "Widgets": [],
+  "Versions": [
+    {
+      "Type": "LayerModuleMetadata",
+      "Number": 8
+    },
+    {
+      "Type": "ModuleMetadata",
+      "Number": 8
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "$type": "Sungero.Metadata.ReportMetadata, Sungero.Reporting.Shared",
+  "NameGuid": "cf4d7625-71a7-4209-9095-082a4a072871",
+  "Name": "EmployeesEntityReport",
+  "AssociatedGuid": "9fa97003-c0ff-4aad-87c7-5af0a73b67ee",
+  "BaseGuid": "cef9a810-3f30-4eca-9fe3-30992af0b818",
+  "DataSources": [],
+  "DefaultExportFormat": "Excel",
+  "ExportFormats": [
+    "Excel"
+  ],
+  "IconResourcesKeys": [],
+  "Overridden": [
+    "PublicConstants",
+    "PublicStructures",
+    "DisplayName",
+    "Description",
+    "ExportFormats",
+    "DefaultExportFormat"
+  ],
+  "Parameters": [],
+  "PublicStructures": [],
+  "ResourcesKeys": [],
+  "Versions": []
+}
