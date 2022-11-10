@@ -5,7 +5,7 @@ using Sungero.Core;
 using Sungero.CoreEntities;
 using System.Text;
 using System.IO;
-using System.Globalization;
+
 
 namespace DirRX.StudyIntegration.Server
 {
@@ -17,26 +17,36 @@ namespace DirRX.StudyIntegration.Server
     /// </summary>
     public virtual void GetEmployeesFromCsv()
     {
+      Logger.Debug("GetEmployeesFromCsv. Старт процесса.");
       try
       {
         #region Чтение csv файла с интеграционными данными и создание структуры employeeInfoList в памяти.
         var filePath = DirRX.StudyIntegration.Resources.IntegrationWithRubiFilePath;
         var employeeInfoList = new List<Structures.Module.IEmployeeInfo>();
+        var linesNumber = 0;
         
+        if (!File.Exists(filePath))
+        {
+          Logger.ErrorFormat("GetEmployeesFromCsv. Файла не существует: {0}.", filePath);
+          return;
+        }
+        
+        Logger.DebugFormat("GetEmployeesFromCsv. Начало чтения данных из csv файла: {0}.", filePath);
         using( var fs = new FileStream(filePath, FileMode.Open))
         {
-          try
+          var package = new System.Text.StringBuilder();
+          using (var sr = new StreamReader(fs, Encoding.UTF8))
           {
-            var package = new System.Text.StringBuilder();
-            using (var sr = new StreamReader(fs, Encoding.UTF8))
+            var line = string.Empty;
+            // Пропустить первую строчку.
+            sr.ReadLine();
+            
+            while ((line = sr.ReadLine()) != null)
             {
-              var line = string.Empty;
-              
-              // Пропустить первую строчку.
-              sr.ReadLine();
-              
-              while ((line = sr.ReadLine()) != null)
+              try
               {
+                linesNumber ++;
+                Logger.DebugFormat("GetEmployeesFromCsv. Номер строки: {0}. Обработка строки.", linesNumber);
                 var employeeRubyInfo = line.Split(Constants.Module.RubiCsvSplitSymbol);
                 var employeeInfo = Structures.Module.EmployeeInfo.Create();
                 
@@ -44,42 +54,6 @@ namespace DirRX.StudyIntegration.Server
                 employeeInfo.Login = employeeRubyInfo[Constants.Module.RubiLoginIndex];
                 employeeInfo.BusinessEmail = employeeRubyInfo[Constants.Module.RubiBusinessEmailIndex];
                 employeeInfo.Status = employeeRubyInfo[Constants.Module.RubiStatusIndex];
-                
-                #region Преобразование даты.
-                var startDate = default(DateTime);
-                
-                if (!DateTime.TryParseExact(employeeRubyInfo[Constants.Module.RubiStartDateIndex],
-                                            Constants.Module.DateTimeParseFormat,
-                                            CultureInfo.InvariantCulture,
-                                            System.Globalization.DateTimeStyles.None,
-                                            out startDate))
-                {
-                  throw new Exception("Не удалось преобразовать дату для поля StartDate.");
-                }
-                
-                employeeInfo.StartDate = startDate;
-                
-                var endDate = default(DateTime);
-                
-                if (String.IsNullOrEmpty(employeeRubyInfo[Constants.Module.RubiEndDateIndex]))
-                {
-                  employeeInfo.EndDate = null;
-                }
-                else
-                {
-                  if (!DateTime.TryParseExact(employeeRubyInfo[Constants.Module.RubiEndDateIndex],
-                                              Constants.Module.DateTimeParseFormat,
-                                              CultureInfo.InvariantCulture,
-                                              System.Globalization.DateTimeStyles.None,
-                                              out endDate))
-                  {
-                    throw new Exception("Не удалось преобразовать дату для поля EndDate.");
-                  }
-                  
-                  employeeInfo.EndDate = endDate;
-                }
-                #endregion
-                
                 employeeInfo.LastName = employeeRubyInfo[Constants.Module.RubiLastNameIndex];
                 employeeInfo.FirstName = employeeRubyInfo[Constants.Module.RubiFirstNameIndex];
                 employeeInfo.MiddleName = employeeRubyInfo[Constants.Module.RubiMiddleNameIndex];
@@ -87,218 +61,293 @@ namespace DirRX.StudyIntegration.Server
                 employeeInfo.Divcode = employeeRubyInfo[Constants.Module.RubiDivcodeIndex];
                 employeeInfo.ManagerWWID = employeeRubyInfo[Constants.Module.RubiManagerWWIDIndex];
                 
+                #region Преобразование даты.
+                var startDate = DateTime.MinValue;
+                
+                if (!string.IsNullOrEmpty(employeeRubyInfo[Constants.Module.RubiStartDateIndex]) &&
+                    Calendar.TryParseDate(employeeRubyInfo[Constants.Module.RubiStartDateIndex], out startDate))
+                  employeeInfo.StartDate = startDate;
+                else
+                  Logger.ErrorFormat("GetEmployeesFromCsv. Номер строки: {0}. Полученное значение: {1}. Не удалось преобразовать дату для поля StartDate.", linesNumber, employeeRubyInfo[Constants.Module.RubiStartDateIndex]);
+
+                var endDate = DateTime.MinValue;
+                
+                if (!string.IsNullOrEmpty(employeeRubyInfo[Constants.Module.RubiEndDateIndex]))
+                {
+                  if (Calendar.TryParseDate(employeeRubyInfo[Constants.Module.RubiEndDateIndex], out endDate))
+                    employeeInfo.EndDate = endDate;
+                  else
+                    Logger.ErrorFormat("GetEmployeesFromCsv. Номер строки: {0}. Полученное значение: {1}. Не удалось преобразовать дату для поля EndDate.", linesNumber, employeeRubyInfo[Constants.Module.RubiEndDateIndex]);
+                }
+
+                #endregion
+                
                 employeeInfoList.Add(employeeInfo);
               }
+              catch (Exception ex)
+              {
+                Logger.ErrorFormat("GetEmployeesFromCsv. Номер строки: {0}. Строка с данными: {1}. Ошибка при чтении строки: {2}. StackTrace: {3}.",
+                                   linesNumber, line, ex.Message, ex.StackTrace);
+              }
             }
-          }
-          catch(Exception ex)
-          {
-            Logger.ErrorFormat("Интеграция с Rubi. Ошибка при чтении csv файла: {0}", ex.Message);
+            Logger.DebugFormat("GetEmployeesFromCsv. Окончание чтения файла. Всего прочитанных строк: {0}.", linesNumber);
           }
         }
         #endregion
         
-        // Сортировка по WWID руководителя, для сохранения/изменения в первую очередь сотрудников без руководителя.
+        #region Сортировка по WWID руководителя, для создания/изменения в первую очередь сотрудников без руководителя.
         employeeInfoList = employeeInfoList
           .OrderBy(e => e.ManagerWWID)
           .ThenBy(e => e.WWID)
           .ToList();
         
+        #endregion
+        
+        #region Создание/обновление сотрудников в DirectumRX.
         // Список необработанных записей.
         var notSuccessList = new List<Structures.Module.IEmployeeInfo>();
         
-        #region Создание/обновление сотрудников в DirectumRX.
         foreach (var employeeInfo in employeeInfoList)
         {
           try
           {
-            #region Создание/получение сотрудника.
-            var employee = DirRX.IntegrationRubi.Employees.GetAll(ei => ei.WWIDDirRX.Equals(employeeInfo.WWID)).FirstOrDefault();
-            var person = Sungero.Parties.People.Null;
-            var login = Sungero.CoreEntities.Logins.Null;
+            #region Создание/получение сотрудника, его персоны и логина.
             
-            // Если сотрудника нет в БД, то необходимо создать сотрудника, учётную запись и персону.
+            // Получение сотрудника.
+            var employee = DirRX.IntegrationRubi.Employees.GetAll(ei => ei.WWIDDirRX == employeeInfo.WWID).FirstOrDefault();
+            
+            // Если сотрудник не найден, то необходимо его создать вместе с персоной.
             if (employee == null)
             {
               employee = DirRX.IntegrationRubi.Employees.Create();
-              person = Sungero.Parties.People.Create();
+              Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Создан сотрудник.", employee.Id);
+              employee.Person = Sungero.Parties.People.Create();
+              Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Id персоны: {1}. Создана персона.", employee.Id, employee.Person.Id);
+            }
+            else
+              Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Найден сотрудник.", employee.Id);
+            
+            var login = Logins.Null;
+            
+            // Создание/получение логина.
+            if (!string.IsNullOrEmpty(employeeInfo.Login) && employee.Login == null)
+            {
               login = Sungero.CoreEntities.Logins.Create();
+              Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Id учётной записи: {1}. Создана учётная запись.", employee.Id, login.Id);
             }
-            // Если сотрудник уже создан в БД, то необходимо получить его учётную запись и персону.
             else
+              login = employee.Login;
+            
+            #endregion
+            
+            #region Поиск подразделения, должности и руководителя сотрудника.
+            
+            // Поиск подразделения сотрудника.
+            var department = Sungero.Company.Departments.Null;
+            
+            if (!string.IsNullOrEmpty(employeeInfo.Divcode))
             {
-              person = Sungero.Parties.People.Get(employee.Person.Id);
-              login = Sungero.CoreEntities.Logins.Get(employee.Login.Id);
+              department = Sungero.Company.Departments.GetAll(d => d.Code.Equals(employeeInfo.Divcode)).FirstOrDefault();
               
-              if (login == null)
-                login = Sungero.CoreEntities.Logins.Create();
+              if (department == null)
+                Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Не найдено подразделение сотрудника в БД.", employee.Id);
+              else
+                Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Id подразделения: {1}. Не найдено подразделение сотрудника в БД.", employee.Id, department.Id);
             }
-            #endregion
             
-            #region Изменение подразделения сотрудника.
-            if (string.IsNullOrEmpty(employeeInfo.Divcode))
+            // Поиск должности сотрудника.
+            var jobTitle = Sungero.Company.JobTitles.Null;
+            
+            if (!string.IsNullOrEmpty(employeeInfo.PositionName))
             {
-              if (employee.Department != null)
-                employee.Department = Sungero.Company.Departments.Null;
-            }
-            else
-            {
-              var department = Sungero.Company.Departments.GetAll(d => d.Code.Equals(employeeInfo.Divcode)).FirstOrDefault();
+              jobTitle = Sungero.Company.JobTitles.GetAll(jt => jt.Name == employeeInfo.PositionName).FirstOrDefault();
               
-              // Если найдено подразделение у которого Код = Divcode.
-              if (department != null)
-              {
-                // Если найденное подразделение не совпадает со старым, то изменяем подразделение.
-                if (!employee.Department.Equals(department))
-                  employee.Department = department;
-              }
+              if (jobTitle == null)
+                Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Не найдена должность сотрудника в БД.", employee.Id);
+              else
+                Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Id должности: {1}. Найдена должность сотрудника в БД.", employee.Id, jobTitle.Id);
             }
-            #endregion
             
-            #region Изменение должности сотрудника.
-            if (string.IsNullOrEmpty(employeeInfo.PositionName))
+            // Поиск руководителя сотрудника.
+            var manager = DirRX.IntegrationRubi.Employees.Null;
+            
+            if (!string.IsNullOrEmpty(employeeInfo.ManagerWWID))
             {
-              if (employee.JobTitle != null)
-                employee.JobTitle = employee.JobTitle = Sungero.Company.JobTitles.Null;
-            }
-            else
-            {
-              var jobTitle = Sungero.Company.JobTitles.GetAll(jt => jt.Name.Equals(employeeInfo.PositionName)).FirstOrDefault();
+              manager = DirRX.IntegrationRubi.Employees
+                .GetAll(e => e.WWIDDirRX.Equals(employeeInfo.ManagerWWID))
+                .FirstOrDefault();
               
-              // Если найдена должность, у которой Наименование = PositionName.
-              if (jobTitle != null)
-              {
-                // Если найденная должность не совпадает со старой, то меняем на новую должность.
-                if (!employee.JobTitle.Equals(jobTitle))
-                  employee.JobTitle = jobTitle;
-              }
+              if (manager == null)
+                Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Не найден руководитель сотрудника в БД.", employee.Id);
+              else
+                Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Id руководителя: {1}. Найден руководитель сотрудника в БД.", employee.Id, manager.Id);
             }
             #endregion
             
-            #region Изменение состояния сотрудника.
+            #region Изменение персоны.
+            var comment = string.Empty;
             
-            // Если Status не равен «terminated», то заполняется значением «Действующая».
-            // В противном случае заполняется значением «Закрытая».
-            if (employeeInfo.Status == Constants.Module.EmployeeTerminatedStatus)
+            if (employee.Person.FirstName != employeeInfo.FirstName)
             {
-              if (employee.Status != DirRX.IntegrationRubi.Employee.Status.Closed)
-                employee.Status = DirRX.IntegrationRubi.Employee.Status.Closed;
+              // TODO Добавить запись свойства в comment, аналогично ниже
+              employee.Person.FirstName = employeeInfo.FirstName;
+              comment = string.Concat(comment, "Изменено имя. ");
             }
-            else
-            {
-              if (employee.Status != DirRX.IntegrationRubi.Employee.Status.Active)
-                employee.Status = DirRX.IntegrationRubi.Employee.Status.Active;
-            }
-            #endregion
             
-            #region Изменение руководителя сотрудника.
-            
-            // Получить руководителя из уже созданных сотрудников в базе.
-            if (string.IsNullOrEmpty(employeeInfo.ManagerWWID))
+            if (employee.Person.LastName != employeeInfo.LastName)
             {
-              if (employee.MangerDirRX != null)
-                employee.MangerDirRX = DirRX.IntegrationRubi.Employees.Null;
+              employee.Person.LastName = employeeInfo.LastName;
+              comment = string.Concat(comment, "Изменена фамилия. ");
             }
-            else
+            
+            if (employee.Person.MiddleName != employeeInfo.MiddleName)
             {
-              var manager = DirRX.IntegrationRubi.Employees.GetAll(e => e.WWIDDirRX.Equals(employeeInfo.ManagerWWID)).FirstOrDefault();
-              
-              // Если найден руководитель сотрудника, то заполняется поле Руководитель.
-              if(manager != null)
-              {
-                if (!DirRX.IntegrationRubi.Employees.Equals(manager, employee.MangerDirRX))
-                  employee.MangerDirRX = manager;
-              }
+              employee.Person.MiddleName = employeeInfo.MiddleName;
+              comment = string.Concat(comment, "Изменено отчество. ");
+            }
+            
+            // Сохранение в БД.
+            if (employee.Person.State.IsChanged)
+            {
+              employee.Person.Save();
+              Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Id персоны: {1}. Обновление персоны сотрудника. {2}", employee.Id, employee.Person.Id, comment);
             }
             #endregion
             
-            #region Изменение значений полей сотрудника.
-            if (person.FirstName != employeeInfo.FirstName)
-              person.FirstName = employeeInfo.FirstName;
+            #region Изменение учётной записи.
             
-            if (person.LastName != employeeInfo.LastName)
-              person.LastName = employeeInfo.LastName;
-            
-            if (person.MiddleName !=employeeInfo.MiddleName)
-              person.MiddleName = employeeInfo.MiddleName;
-            
-            if (login.LoginName != employeeInfo.Login)
+            // 
+            if (login != null && !string.IsNullOrEmpty(employeeInfo.Login)  && login.LoginName != employeeInfo.Login)
+            {
               login.LoginName = employeeInfo.Login;
-            
-            if (person.State.IsChanged)
-              employee.Person = person;
-            
-            if (login.State.IsChanged)
-              employee.Login = login;
-            
-            if (employee.Email != employeeInfo.BusinessEmail)
-              employee.Email = employeeInfo.BusinessEmail;
-            
-            if (employee.StartDateDirRX != employeeInfo.StartDate)
-              employee.StartDateDirRX = employeeInfo.StartDate;
-            
-            if (employee.EndDateDirRX != employeeInfo.EndDate)
-              employee.EndDateDirRX = employeeInfo.EndDate;
-            
-            if (employee.WWIDDirRX != employeeInfo.WWID)
-              employee.WWIDDirRX = employeeInfo.WWID;
-            
-            if (employee.NeedNotifyExpiredAssignments != false)
-              employee.NeedNotifyExpiredAssignments = false;
-            
-            if (employee.NeedNotifyNewAssignments != false)
-              employee.NeedNotifyNewAssignments = false;
-            
-            #endregion
-            
-            #region Выключение обязательности заполнения подразделения и должности.
-            employee.State.Properties.Department.IsRequired = false;
-            employee.State.Properties.JobTitle.IsRequired = false;
-            #endregion
-            
-            #region Сохранение в БД.
-            if (person.State.IsChanged)
-              person.Save();
-            
-            if (login.State.IsChanged)
               login.Save();
+              Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Id учётной записи: {1}. Обновление учётной записи. Изменено имя учётной записи", employee.Id, login.Id);
+            }
+            
+            #endregion
+            
+            #region Изменение свойств сотрудника.
+            comment = string.Empty;
+            
+            // Изменение почты сотрудника.
+            if (employee.Email != employeeInfo.BusinessEmail)
+            {
+              employee.Email = employeeInfo.BusinessEmail;
+              Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Обновление сотрудника. Изменена почта сотрудника.", employee.Id);
+            }
+            
+            // Изменение даты приёма сотрудника.
+            if (employee.StartDateDirRX != employeeInfo.StartDate)
+            {
+              employee.StartDateDirRX = employeeInfo.StartDate;
+              Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Обновление сотрудника. Изменена дата приёма сотрудника.", employee.Id);
+            }
+            
+            // Изменение даты увольнения сотрудника.
+            if (employee.EndDateDirRX != employeeInfo.EndDate)
+            {
+              employee.EndDateDirRX = employeeInfo.EndDate;
+              Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Обновление сотрудника. Изменена дата увольнения сотрудника.", employee.Id);
+            }
+            
+            // Изменение учётной записи у сотрудника.
+            if (employee.Login != null && !Logins.Equals(employee.Login, login))
+            {
+              employee.Login = login;
+              
+              if (employee.Login == null)
+                Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Id учётной записи: {1}. Обновление сотрудника. Очищен логин у сотрудника.", employee.Id, employee.Login.Id);
+              else
+                Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Id учётной записи: {1}. Обновление сотрудника. Изменена учётная запись у сотрудника.", employee.Id, employee.Login.Id);
+            }
+            
+            // Изменение подразделения у сотрудника.
+            if (employee.Department != null && !Sungero.Company.Departments.Equals(employee.Department, department))
+            {
+              employee.Department = department;
+              
+              if (employee.Department == null)
+                Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Id подразделения: {1}. Обновление сотрудника. Очищено подразделение у сотрудника.", employee.Id, employee.Department.Id);
+              else
+                Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Id подразделения: {1}. Обновление сотрудника. Изменено подразделение сотрудника.", employee.Id, employee.Department.Id);
+            }
+            
+            // Изменение должности у сотрудника.
+            
+            if (employee.JobTitle != null && !Sungero.Company.JobTitles.Equals(employee.JobTitle, jobTitle))
+            {
+              employee.JobTitle = jobTitle;
+              
+              if (employee.JobTitle == null)
+                Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Id должности: {1}. Обновление сотрудника. Очищена должность у сотрудника.", employee.Id, employee.JobTitle.Id);
+              else
+                Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Id должности: {1}. Обновление сотрудника. Изменена должность сотрудника.", employee.Id, employee.JobTitle.Id);
+            }
+            
+            // Изменение состояния сотрудника.
+            var status = employeeInfo.Status == Constants.Module.EmployeeTerminatedStatus ?
+              DirRX.IntegrationRubi.Employee.Status.Closed :
+              DirRX.IntegrationRubi.Employee.Status.Active;
+            
+            if (employee.Status != status)
+            {
+              employee.Status = status;
+              Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Обновление сотрудника. Изменено состояние - {1}.", employee.Id, employee.Status);
+            }
+            
+            // Изменение руководителя сотрудника.
+            if (employee.MangerDirRX != null && !DirRX.IntegrationRubi.Employees.Equals(employee.MangerDirRX, manager))
+            {
+              employee.MangerDirRX = manager;
+              
+              if (employee.MangerDirRX == null)
+                Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Обновление сотрудника. Очищен руководитель сотрудника.", employee.Id);
+              else
+                Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Id руководителя: {1}. Обновление сотрудника. Изменен руководитель сотрудника.", employee.Id, employee.MangerDirRX.Id);
+            }
+            #endregion
+            
+            #region Сохранение сотрудника в БД.
             
             if (employee.State.IsChanged)
+            {
+              // Выключение обязательности заполнения подразделения и должности.
+              employee.State.Properties.Department.IsRequired = false;
+              employee.State.Properties.JobTitle.IsRequired = false;
+              
               employee.Save();
-            
+              Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Сотрудник сохранён в БД.", employee.Id);
+              // Включение обязательности заполнения подразделения и должности.
+              employee.State.Properties.Department.IsRequired = true;
+              employee.State.Properties.JobTitle.IsRequired = true;
+            }
             #endregion
             
-            #region Включение обязательности заполнения подразделения и должности.
-            employee.State.Properties.Department.IsRequired = true;
-            employee.State.Properties.JobTitle.IsRequired = true;
-            #endregion
           }
           catch(Exception ex)
           {
-            Logger.ErrorFormat("Интеграция с Rubi. Ошибка при создании/обновлении сотрудника WWID = {0}: {1}",
-                               employeeInfo.WWID, ex.Message);
+            Logger.ErrorFormat("GetEmployeesFromCsv. Ошибка при создании/обновлении сотрудника WWID = {0}: {1}, {2}",
+                               employeeInfo.WWID, ex.Message, ex.StackTrace);
             
-            // Добавление необработанную запись в список notSuccessList.
+            // Добавление необработанной записи в список notSuccessList.
             notSuccessList.Add(employeeInfo);
           }
         }
         #endregion
         
         #region Логирование результатов интеграции.
-        if (notSuccessList.Count() != 0)
+        if (notSuccessList.Any())
         {
-          Logger.ErrorFormat("Интеграция с Rubi. Количество необработанных записей {0} из {1}",
-                             notSuccessList.Count, employeeInfoList.Count());
+          Logger.ErrorFormat("GetEmployeesFromCsv. Количество необработанных записей {0} из {1}",
+                             notSuccessList.Count(), employeeInfoList.Count());
         }
-        else
-        {
-          Logger.Debug("Интеграция с Rubi. Данные сотрудников успешно обновлены.");
-        }
+        Logger.DebugFormat("GetEmployeesFromCsv. Успешно обработано {0} записей сотрудников из {1}.",
+                           linesNumber - notSuccessList.Count, linesNumber);
         #endregion
       }
       catch (Exception ex)
       {
-        Logger.ErrorFormat("Интеграция с Rubi. Ошибка при выполнении фонового процесса: {0}", ex.Message);
+        Logger.ErrorFormat("GetEmployeesFromCsv. Ошибка при выполнении фонового процесса: {0}, {1}", ex.Message, ex.StackTrace);
       }
     }
   }
