@@ -79,4 +79,10 @@
   <data name="PropertyIsCleared" xml:space="preserve">
     <value> {0} - cleared.</value>
   </data>
+  <data name="PersonalPhotoIsChanged" xml:space="preserve">
+    <value>Personal photo is updated.</value>
+  </data>
+  <data name="PersonalPhotoIsCleared" xml:space="preserve">
+    <value>Personal photo is cleared.</value>
+  </data>
 </root>

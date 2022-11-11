@@ -79,4 +79,10 @@
   <data name="PropertyIsCleared" xml:space="preserve">
     <value> {0} - удалено.</value>
   </data>
+  <data name="PersonalPhotoIsChanged" xml:space="preserve">
+    <value>Обновлена фотография сотрудника.</value>
+  </data>
+  <data name="PersonalPhotoIsCleared" xml:space="preserve">
+    <value>Удалена фотография сотрудника.</value>
+  </data>
 </root>

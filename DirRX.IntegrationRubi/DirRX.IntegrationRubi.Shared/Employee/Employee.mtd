@@ -492,7 +492,9 @@
     "Enum_Operation_Created",
     "Enum_Operation_Updated",
     "EntityIsChangedComment",
-    "PropertyIsCleared"
+    "PropertyIsCleared",
+    "PersonalPhotoIsChanged",
+    "PersonalPhotoIsCleared"
   ],
   "RibbonCardMetadata": {
     "NameGuid": "08e9f6ed-0d21-4e69-b41b-d0921ca1285f",
