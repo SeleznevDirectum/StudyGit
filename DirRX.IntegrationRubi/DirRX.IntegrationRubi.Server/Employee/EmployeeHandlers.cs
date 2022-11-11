@@ -22,7 +22,7 @@ namespace DirRX.IntegrationRubi
         
         // Изменилось WWID сотрудника.
         if (_obj.State.Properties.WWIDDirRX.IsChanged &&
-            _obj.State.Properties.WWIDDirRX.OriginValue != _obj.WWIDDirRX)
+            _obj.State.Properties.WWIDDirRX.OriginalValue != _obj.WWIDDirRX)
           commentsList.Add(DirRX.IntegrationRubi.Employees.Resources.PropertyIsChangedCommentFormat(
             Employees.Info.Properties.WWIDDirRX.LocalizedName, _obj.WWIDDirRX));
         
