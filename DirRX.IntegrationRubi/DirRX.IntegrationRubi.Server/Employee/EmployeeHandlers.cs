@@ -151,14 +151,14 @@ namespace DirRX.IntegrationRubi
         
         // Изменилось ФИО.
         if ((_obj.State.Properties.Person.IsChanged &&
-             !Sungero.Parties.People.Equals(_obj.State.Properties.Person.PreviousValue, _obj.Person)) ||
+             !Sungero.Parties.People.Equals(_obj.State.Properties.Person.OriginalValue, _obj.Person)) ||
             _obj.State.Properties.Name.OriginalValue != _obj.Name)
           commentsList.Add(DirRX.IntegrationRubi.Employees.Resources.PersonIsChangedFormat(
             _obj.Person, _obj.Id));
         
         // Изменилось подразделение сотрудника.
         if (_obj.State.Properties.Department.IsChanged &&
-            !Sungero.Company.Departments.Equals(_obj.State.Properties.Department.PreviousValue, _obj.Department))
+            !Sungero.Company.Departments.Equals(_obj.State.Properties.Department.OriginalValue, _obj.Department))
         {
           if (_obj.Department == null)
             commentsList.Add(DirRX.IntegrationRubi.Employees.Resources.PropertyIsClearedFormat(
@@ -172,7 +172,7 @@ namespace DirRX.IntegrationRubi
         
         // Изменилась должность сотрудника.
         if (_obj.State.Properties.JobTitle.IsChanged &&
-            !Sungero.Company.JobTitles.Equals(_obj.State.Properties.JobTitle.PreviousValue, _obj.JobTitle))
+            !Sungero.Company.JobTitles.Equals(_obj.State.Properties.JobTitle.OriginalValue, _obj.JobTitle))
         {
           if (_obj.JobTitle == null)
             commentsList.Add(DirRX.IntegrationRubi.Employees.Resources.PropertyIsClearedFormat(
@@ -186,7 +186,7 @@ namespace DirRX.IntegrationRubi
         
         // Изменился руководитель сотрудника.
         if (_obj.State.Properties.MangerDirRX.IsChanged
-            && !Employees.Equals(_obj.State.Properties.MangerDirRX.PreviousValue, _obj.MangerDirRX))
+            && !Employees.Equals(_obj.State.Properties.MangerDirRX.OriginalValue, _obj.MangerDirRX))
         {
           if (_obj.MangerDirRX == null)
             commentsList.Add(DirRX.IntegrationRubi.Employees.Resources.PropertyIsClearedFormat(
