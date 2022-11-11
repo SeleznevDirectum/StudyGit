@@ -22,7 +22,7 @@ namespace DirRX.IntegrationRubi
         
         // Изменилось WWID сотрудника.
         if (_obj.State.Properties.WWIDDirRX.IsChanged &&
-            _obj.State.Properties.WWIDDirRX.PreviousValue != _obj.WWIDDirRX)
+            _obj.State.Properties.WWIDDirRX.OriginValue != _obj.WWIDDirRX)
           commentsList.Add(DirRX.IntegrationRubi.Employees.Resources.PropertyIsChangedCommentFormat(
             Employees.Info.Properties.WWIDDirRX.LocalizedName, _obj.WWIDDirRX));
         
@@ -194,7 +194,7 @@ namespace DirRX.IntegrationRubi
           else
             commentsList.Add(DirRX.IntegrationRubi.Employees.Resources.ManagerIsChangedFormat(
               _obj.MangerDirRX,
-              _obj.MangerDirRX.Person.Id));
+              _obj.MangerDirRX.Id));
         }
         
         if (commentsList.Any())
