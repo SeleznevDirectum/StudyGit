@@ -122,21 +122,25 @@ namespace DirRX.StudyIntegration.Server
               employee = DirRX.IntegrationRubi.Employees.Create();
               Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Создан сотрудник.", employee.Id);
               employee.Person = Sungero.Parties.People.Create();
-              Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Id персоны: {1}. Создана персона.", employee.Id, employee.Person.Id);
+              Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Создана персона для сотрудника: Id персоны - {1}.", employee.Id, employee.Person.Id);
             }
             else
               Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Найден сотрудник.", employee.Id);
             
+            // Создание/получение логина.
             var login = Logins.Null;
             
-            // Создание/получение логина.
             if (!string.IsNullOrEmpty(employeeInfo.Login) && employee.Login == null)
             {
               login = Sungero.CoreEntities.Logins.Create();
-              Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Id учётной записи: {1}. Создана учётная запись.", employee.Id, login.Id);
+              Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Создана учётная запись для сотрудника: Id учётной записи - {1}.", employee.Id, login.Id);
             }
-            else
+            
+            if (!string.IsNullOrEmpty(employeeInfo.Login) && employee.Login != null)
+            {
               login = employee.Login;
+              Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Найдена учётная запись сотрудника: Id учётной записи - {1}.", employee.Id, login.Id);
+            }
             
             #endregion
             
@@ -152,7 +156,7 @@ namespace DirRX.StudyIntegration.Server
               if (department == null)
                 Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Не найдено подразделение сотрудника в БД.", employee.Id);
               else
-                Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Id подразделения: {1}. Не найдено подразделение сотрудника в БД.", employee.Id, department.Id);
+                Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Найдено подразделение сотрудника в БД: Id подразделения - {1}. ", employee.Id, employee.Department.Id);
             }
             
             // Поиск должности сотрудника.
@@ -165,7 +169,7 @@ namespace DirRX.StudyIntegration.Server
               if (jobTitle == null)
                 Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Не найдена должность сотрудника в БД.", employee.Id);
               else
-                Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Id должности: {1}. Найдена должность сотрудника в БД.", employee.Id, jobTitle.Id);
+                Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Найдена должность сотрудника в БД: Id должности - {1}.", employee.Id, jobTitle.Id);
             }
             
             // Поиск руководителя сотрудника.
@@ -180,96 +184,117 @@ namespace DirRX.StudyIntegration.Server
               if (manager == null)
                 Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Не найден руководитель сотрудника в БД.", employee.Id);
               else
-                Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Id руководителя: {1}. Найден руководитель сотрудника в БД.", employee.Id, manager.Id);
+                Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Найден руководитель сотрудника в БД: Id руководителя - {1}.", employee.Id, manager.Id);
             }
             #endregion
             
             #region Изменение персоны.
-            var comment = string.Empty;
             
-            if (employee.Person.FirstName != employeeInfo.FirstName)
+            if (!string.IsNullOrEmpty(employeeInfo.FirstName) && employee.Person.FirstName != employeeInfo.FirstName)
             {
-              // TODO Добавить запись свойства в comment, аналогично ниже
               employee.Person.FirstName = employeeInfo.FirstName;
-              comment = string.Concat(comment, "Изменено имя. ");
+              Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Id персоны: {1}. Обновление персоны сотрудника. Изменение имени: Старое значение {2}. Новое значение {3}.",
+                                 employee.Id, employee.Person.Id, employee.Person.State.Properties.FirstName.PreviousValue, employee.Person.FirstName);
             }
             
-            if (employee.Person.LastName != employeeInfo.LastName)
+            if (!string.IsNullOrEmpty(employeeInfo.LastName) && employee.Person.LastName != employeeInfo.LastName)
             {
               employee.Person.LastName = employeeInfo.LastName;
-              comment = string.Concat(comment, "Изменена фамилия. ");
+              Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Id персоны: {1}. Обновление персоны сотрудника. Изменение фамилии: Старое значение {2}. Новое значение {3}.",
+                                 employee.Id, employee.Person.Id, employee.Person.State.Properties.LastName.PreviousValue, employee.Person.LastName);
             }
             
-            if (employee.Person.MiddleName != employeeInfo.MiddleName)
+            if (!string.IsNullOrEmpty(employeeInfo.MiddleName) && employee.Person.MiddleName != employeeInfo.MiddleName)
             {
               employee.Person.MiddleName = employeeInfo.MiddleName;
-              comment = string.Concat(comment, "Изменено отчество. ");
+              Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Id персоны: {1}. Обновление персоны сотрудника. Изменение отчества: Старое значение {2}. Новое значение {3}.",
+                                 employee.Id, employee.Person.Id, employee.Person.State.Properties.MiddleName.PreviousValue, employee.Person.MiddleName);
             }
             
             // Сохранение в БД.
             if (employee.Person.State.IsChanged)
             {
-              employee.Person.Save();
-              Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Id персоны: {1}. Обновление персоны сотрудника. {2}", employee.Id, employee.Person.Id, comment);
+              try
+              {
+                employee.Person.Save();
+                Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Id персоны: {1}. Персона сохранена в БД.", employee.Id, employee.Person.Id);
+              }
+              catch (Exception ex)
+              {
+                Logger.ErrorFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Id персоны: {1}. Ошибка при сохранении учётной записи в БД: {2}, {3}.", employee.Id, employee.Person.Id, ex.Message, ex.StackTrace);
+              }
             }
             #endregion
             
             #region Изменение учётной записи.
             
-            // 
             if (login != null && !string.IsNullOrEmpty(employeeInfo.Login)  && login.LoginName != employeeInfo.Login)
             {
               login.LoginName = employeeInfo.Login;
-              login.Save();
-              Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Id учётной записи: {1}. Обновление учётной записи. Изменено имя учётной записи", employee.Id, login.Id);
+              Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Id учётной записи: {1}. Обновление учётной записи. Изменено имя учётной записи. Старое знчение {2}. Новое значение {3}.",
+                                 employee.Id, login.Id, login.State.Properties.LoginName.PreviousValue, login.LoginName);
+              try
+              {
+                login.Save();
+                Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Id учётной записи: {1}. Учётная запись сохранена в БД.",employee.Id, login.Id);
+              }
+              catch (Exception ex)
+              {
+                Logger.ErrorFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Id учётной записи: {1}. Ошибка при сохранении учётной записи в БД: {2}, {3}.", employee.Id, login.Id, ex.Message, ex.StackTrace);
+              }
             }
             
             #endregion
             
             #region Изменение свойств сотрудника.
-            comment = string.Empty;
             
             // Изменение почты сотрудника.
             if (employee.Email != employeeInfo.BusinessEmail)
             {
               employee.Email = employeeInfo.BusinessEmail;
-              Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Обновление сотрудника. Изменена почта сотрудника.", employee.Id);
+              Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Обновление сотрудника. Изменена дата увольнения сотрудника: Старое значение {1}. Новое значение {2}.",
+                                 employee.Id, employee.State.Properties.Email.PreviousValue, employee.Email);
             }
             
             // Изменение даты приёма сотрудника.
             if (employee.StartDateDirRX != employeeInfo.StartDate)
             {
               employee.StartDateDirRX = employeeInfo.StartDate;
-              Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Обновление сотрудника. Изменена дата приёма сотрудника.", employee.Id);
+              Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Обновление сотрудника. Изменена дата увольнения сотрудника: Старое значение {1}. Новое значение {2}.",
+                                 employee.Id, employee.State.Properties.StartDateDirRX.PreviousValue, employeeInfo.StartDate);
             }
             
             // Изменение даты увольнения сотрудника.
             if (employee.EndDateDirRX != employeeInfo.EndDate)
             {
               employee.EndDateDirRX = employeeInfo.EndDate;
-              Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Обновление сотрудника. Изменена дата увольнения сотрудника.", employee.Id);
+              Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Обновление сотрудника. Изменена дата увольнения сотрудника: Старое значение {1}. Новое значение {2}.",
+                                 employee.Id, employee.State.Properties.EndDateDirRX.PreviousValue, employeeInfo.EndDate);
             }
             
             // Изменение учётной записи у сотрудника.
-            if (employee.Login != null && !Logins.Equals(employee.Login, login))
+            if (!Logins.Equals(employee.Login, login))
             {
-              Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Обновление сотрудника. Изменение учётной записи: Старое значение {1}. Новое значение {2}", employee.Id, employee.Login, login);
               employee.Login = login;
+              Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Обновление сотрудника. Изменение учётной записи у сотрудника: Старое значение {1}. Новое значение {2}.",
+                                 employee.Id, employee.State.Properties.Login.OriginalValue, employee.Login);
             }
             
             // Изменение подразделения у сотрудника.
             if (employee.Department != null && !Sungero.Company.Departments.Equals(employee.Department, department))
             {
-              Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Обновление сотрудника. Изменение подразделения: Старое значение {1}. Новое значение {2}", employee.Id, employee.Department, department);
               employee.Department = department;
+              Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Обновление сотрудника. Изменение подразделения у сотрудника: Старое значение {1}. Новое значение {2}.",
+                                 employee.Id, employee.State.Properties.Department.OriginalValue, employee.Department);
             }
             
             // Изменение должности у сотрудника.
             
             if (employee.JobTitle != null && !Sungero.Company.JobTitles.Equals(employee.JobTitle, jobTitle))
             {
-              Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Обновление сотрудника. Изменение должности: Старое значение {1}. Новое значение {2}", employee.Id, employee.JobTitle, jobTitle);
               employee.JobTitle = jobTitle;
+              Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Обновление сотрудника. Изменение должности у сотрудника: Старое значение {1}. Новое значение {2}.",
+                                 employee.Id, employee.State.Properties.JobTitle.OriginalValue, employee.JobTitle);
             }
             
             // Изменение состояния сотрудника.
@@ -279,19 +304,17 @@ namespace DirRX.StudyIntegration.Server
             
             if (employee.Status != status)
             {
-              Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Обновление сотрудника. Изменено состояние - {1}.", employee.Id, employee.Status);
               employee.Status = status;
+              Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Обновление сотрудника. Изменено состояние сотрудника: Старое значение {1}. Новое значение {2}.",
+                                 employee.Id, employee.State.Properties.Status.PreviousValue, employee.Status);
             }
             
             // Изменение руководителя сотрудника.
             if (employee.MangerDirRX != null && !DirRX.IntegrationRubi.Employees.Equals(employee.MangerDirRX, manager))
             {
               employee.MangerDirRX = manager;
-              
-              if (employee.MangerDirRX == null)
-                Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Обновление сотрудника. Очищен руководитель сотрудника.", employee.Id);
-              else
-                Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Id руководителя: {1}. Обновление сотрудника. Изменен руководитель сотрудника.", employee.Id, employee.MangerDirRX.Id);
+              Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Обновление сотрудника. Изменен руководитель: Старое значение {1}. Новое значение {2}.",
+                                 employee.Id, employee.State.Properties.MangerDirRX.OriginalValue, employee.MangerDirRX);
             }
             #endregion
             
@@ -305,13 +328,19 @@ namespace DirRX.StudyIntegration.Server
               
               try
               {
-                employee.Save();
-                Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Сотрудник сохранён в БД.", employee.Id);
+                if (employee.Department == null && employee.State.Properties.Department.PreviousValue != null)
+                  Logger.ErrorFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Ошибка при сохранении сотрудника в БД. Некорректно передано подразделение сотрудника.", employee.Id);
+                else
+                {
+                  employee.Save();
+                  Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Сотрудник сохранён в БД.", employee.Id);
+                }
               }
               catch (Exception ex)
               {
-                Logger.ErrorFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Ошибка при сохранении сотрудника в БД: {1}, {2}", employee.Id, ex.Message, ex.StackTrace);
+                Logger.ErrorFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Ошибка при сохранении сотрудника в БД: {1}, {2}.", employee.Id, ex.Message, ex.StackTrace);
               }
+              
               // Включение обязательности заполнения подразделения и должности.
               employee.State.Properties.Department.IsRequired = true;
               employee.State.Properties.JobTitle.IsRequired = true;
@@ -321,7 +350,7 @@ namespace DirRX.StudyIntegration.Server
           }
           catch(Exception ex)
           {
-            Logger.ErrorFormat("GetEmployeesFromCsv. Ошибка при создании/обновлении сотрудника WWID = {0}: {1}, {2}",
+            Logger.ErrorFormat("GetEmployeesFromCsv. Ошибка при создании/обновлении сотрудника WWID = {0}: {1}, {2}.",
                                employeeInfo.WWID, ex.Message, ex.StackTrace);
             
             // Добавление необработанной записи в список notSuccessList.
@@ -337,7 +366,7 @@ namespace DirRX.StudyIntegration.Server
       }
       catch (Exception ex)
       {
-        Logger.ErrorFormat("GetEmployeesFromCsv. Ошибка при выполнении фонового процесса: {0}, {1}", ex.Message, ex.StackTrace);
+        Logger.ErrorFormat("GetEmployeesFromCsv. Ошибка при выполнении фонового процесса: {0}, {1}.", ex.Message, ex.StackTrace);
       }
       Logger.Debug("GetEmployeesFromCsv. Конец процесса.");
     }
