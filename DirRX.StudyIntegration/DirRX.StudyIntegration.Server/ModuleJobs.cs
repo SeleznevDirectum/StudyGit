@@ -253,35 +253,23 @@ namespace DirRX.StudyIntegration.Server
             // Изменение учётной записи у сотрудника.
             if (employee.Login != null && !Logins.Equals(employee.Login, login))
             {
+              Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Обновление сотрудника. Изменение учётной записи: Старое значение {1}. Новое значение {2}", employee.Id, employee.Login, login);
               employee.Login = login;
-              
-              if (employee.Login == null)
-                Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Id учётной записи: {1}. Обновление сотрудника. Очищен логин у сотрудника.", employee.Id, employee.Login.Id);
-              else
-                Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Id учётной записи: {1}. Обновление сотрудника. Изменена учётная запись у сотрудника.", employee.Id, employee.Login.Id);
             }
             
             // Изменение подразделения у сотрудника.
             if (employee.Department != null && !Sungero.Company.Departments.Equals(employee.Department, department))
             {
+              Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Обновление сотрудника. Изменение подразделения: Старое значение {1}. Новое значение {2}", employee.Id, employee.Department, department);
               employee.Department = department;
-              
-              if (employee.Department == null)
-                Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Id подразделения: {1}. Обновление сотрудника. Очищено подразделение у сотрудника.", employee.Id, employee.Department.Id);
-              else
-                Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Id подразделения: {1}. Обновление сотрудника. Изменено подразделение сотрудника.", employee.Id, employee.Department.Id);
             }
             
             // Изменение должности у сотрудника.
             
             if (employee.JobTitle != null && !Sungero.Company.JobTitles.Equals(employee.JobTitle, jobTitle))
             {
+              Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Обновление сотрудника. Изменение должности: Старое значение {1}. Новое значение {2}", employee.Id, employee.JobTitle, jobTitle);
               employee.JobTitle = jobTitle;
-              
-              if (employee.JobTitle == null)
-                Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Id должности: {1}. Обновление сотрудника. Очищена должность у сотрудника.", employee.Id, employee.JobTitle.Id);
-              else
-                Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Id должности: {1}. Обновление сотрудника. Изменена должность сотрудника.", employee.Id, employee.JobTitle.Id);
             }
             
             // Изменение состояния сотрудника.
@@ -291,8 +279,8 @@ namespace DirRX.StudyIntegration.Server
             
             if (employee.Status != status)
             {
-              employee.Status = status;
               Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Обновление сотрудника. Изменено состояние - {1}.", employee.Id, employee.Status);
+              employee.Status = status;
             }
             
             // Изменение руководителя сотрудника.
@@ -315,8 +303,15 @@ namespace DirRX.StudyIntegration.Server
               employee.State.Properties.Department.IsRequired = false;
               employee.State.Properties.JobTitle.IsRequired = false;
               
-              employee.Save();
-              Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Сотрудник сохранён в БД.", employee.Id);
+              try
+              {
+                employee.Save();
+                Logger.DebugFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Сотрудник сохранён в БД.", employee.Id);
+              }
+              catch (Exception ex)
+              {
+                Logger.ErrorFormat("GetEmployeesFromCsv. Id сотрудника: {0}. Ошибка при сохранении сотрудника в БД: {1}, {2}", employee.Id, ex.Message, ex.StackTrace);
+              }
               // Включение обязательности заполнения подразделения и должности.
               employee.State.Properties.Department.IsRequired = true;
               employee.State.Properties.JobTitle.IsRequired = true;
@@ -336,19 +331,15 @@ namespace DirRX.StudyIntegration.Server
         #endregion
         
         #region Логирование результатов интеграции.
-        if (notSuccessList.Any())
-        {
-          Logger.ErrorFormat("GetEmployeesFromCsv. Количество необработанных записей {0} из {1}",
-                             notSuccessList.Count(), employeeInfoList.Count());
-        }
-        Logger.DebugFormat("GetEmployeesFromCsv. Успешно обработано {0} записей сотрудников из {1}.",
-                           linesNumber - notSuccessList.Count, linesNumber);
+        Logger.DebugFormat("GetEmployeesFromCsv. Обработано {0} записей. Успешно обновлено {1}. Не удалось обновить: {2}.",
+                           linesNumber, linesNumber - notSuccessList.Count, notSuccessList.Count);
         #endregion
       }
       catch (Exception ex)
       {
         Logger.ErrorFormat("GetEmployeesFromCsv. Ошибка при выполнении фонового процесса: {0}, {1}", ex.Message, ex.StackTrace);
       }
+      Logger.Debug("GetEmployeesFromCsv. Конец процесса.");
     }
   }
 }
